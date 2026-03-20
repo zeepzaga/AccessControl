@@ -1,13 +1,16 @@
 ﻿using AccessControl.Application.Access;
+using AccessControl.Infrastructure.Data;
 using AccessControl.Infrastructure.Options;
+using AccessControl.Infrastructure.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using AccessControl.Infrastructure.Data;
 
 namespace AccessControl.Api.Controllers;
 
 [ApiController]
+[Authorize(Policy = AuthPolicies.Device)]
 [Route("api/device")]
 public class DeviceController : ControllerBase
 {
@@ -41,25 +44,25 @@ public class DeviceController : ControllerBase
             return BadRequest(new { message = "cardUid is required" });
         }
 
-        if (message.AccessPointId is null && message.DeviceId is null)
+        if (!Guid.TryParse(User.FindFirst("device_id")?.Value, out var authenticatedDeviceId))
         {
-            return BadRequest(new { message = "accessPointId or deviceId is required" });
+            return Forbid();
         }
 
-        var accessPointId = message.AccessPointId;
-        if (accessPointId is null && message.DeviceId is not null)
+        if (message.DeviceId.HasValue && message.DeviceId.Value != authenticatedDeviceId)
         {
-            var device = await _db.Devices.AsNoTracking().FirstOrDefaultAsync(d => d.Id == message.DeviceId, cancellationToken);
-            if (device is null)
-            {
-                return NotFound(new { message = "device not found" });
-            }
+            return Forbid();
+        }
 
-            accessPointId = device.AccessPointId;
-            if (accessPointId is null)
-            {
-                return BadRequest(new { message = "device has no access point" });
-            }
+        var device = await _db.Devices.AsNoTracking().FirstOrDefaultAsync(d => d.Id == authenticatedDeviceId, cancellationToken);
+        if (device is null || !device.IsActive)
+        {
+            return Unauthorized(new { message = "device not found or inactive" });
+        }
+
+        if (!device.AccessPointId.HasValue)
+        {
+            return BadRequest(new { message = "device has no access point" });
         }
 
         var faceImage = string.IsNullOrWhiteSpace(message.FaceImageBase64)
@@ -68,20 +71,20 @@ public class DeviceController : ControllerBase
 
         var request = new CardReadRequest(
             message.CardUid,
-            accessPointId,
-            message.DeviceId,
+            device.AccessPointId,
+            authenticatedDeviceId,
             faceImage,
             DateTime.UtcNow);
 
         var decision = await _decisionService.ProcessCardReadAsync(request, cancellationToken);
 
-        await _responseSender.SendDecisionAsync(message.DeviceId, decision.Granted, decision.Reason.ToString(), cancellationToken);
+        await _responseSender.SendDecisionAsync(authenticatedDeviceId, decision.Granted, decision.Reason.ToString(), cancellationToken);
 
         var response = new CardReadResponse
         {
             CardUid = message.CardUid,
-            DeviceId = message.DeviceId,
-            AccessPointId = accessPointId,
+            DeviceId = authenticatedDeviceId,
+            AccessPointId = device.AccessPointId,
             Granted = decision.Granted,
             Reason = decision.Reason.ToString(),
             EmployeeId = decision.EmployeeId,
@@ -95,7 +98,6 @@ public class DeviceController : ControllerBase
     {
         public string CardUid { get; set; } = string.Empty;
         public Guid? DeviceId { get; set; }
-        public Guid? AccessPointId { get; set; }
         public string? FaceImageBase64 { get; set; }
     }
 

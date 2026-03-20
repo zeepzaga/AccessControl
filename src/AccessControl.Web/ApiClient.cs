@@ -201,6 +201,44 @@ public class ApiClient
         return new ExportResult(bytes, contentType, fileName);
     }
 
+    public async Task<List<DeviceResponse>> GetDevicesAsync(string? q = null, bool? isActive = null) =>
+        await _http.GetFromJsonAsync<List<DeviceResponse>>("api/devices" + BuildQuery(new Dictionary<string, string?>
+        {
+            ["q"] = q,
+            ["isActive"] = isActive?.ToString()
+        })) ?? [];
+
+    public async Task<DeviceResponse?> GetDeviceAsync(Guid id) =>
+        await _http.GetFromJsonAsync<DeviceResponse>($"api/devices/{id}");
+
+    public async Task<DeviceWithTokenResponse> CreateDeviceAsync(DeviceUpsertRequest device)
+    {
+        var response = await _http.PostAsJsonAsync("api/devices", device);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<DeviceWithTokenResponse>()
+            ?? throw new InvalidOperationException("Device creation response was empty.");
+    }
+
+    public async Task UpdateDeviceAsync(Guid id, DeviceUpsertRequest device)
+    {
+        var response = await _http.PutAsJsonAsync($"api/devices/{id}", device);
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task<DeviceTokenResponse> RotateDeviceTokenAsync(Guid id)
+    {
+        var response = await _http.PostAsync($"api/devices/{id}/rotate-token", null);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<DeviceTokenResponse>()
+            ?? throw new InvalidOperationException("Device token rotation response was empty.");
+    }
+
+    public async Task DeleteDeviceAsync(Guid id)
+    {
+        var response = await _http.DeleteAsync($"api/devices/{id}");
+        response.EnsureSuccessStatusCode();
+    }
+
     private static string BuildQuery(Dictionary<string, string?> values)
     {
         var parts = values
@@ -229,5 +267,41 @@ public class ApiClient
         public bool IsGuestAccess { get; set; }
         public List<Guid> SelectedEmployeeIds { get; set; } = new();
         public List<Guid> SelectedDepartmentIds { get; set; } = new();
+    }
+
+    public sealed class DeviceUpsertRequest
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Location { get; set; }
+        public Guid? AccessPointId { get; set; }
+        public bool IsActive { get; set; } = true;
+    }
+
+    public sealed class DeviceResponse
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Location { get; set; }
+        public Guid? AccessPointId { get; set; }
+        public string? AccessPointName { get; set; }
+        public string? TokenHint { get; set; }
+        public DateTime? TokenLastRotatedAt { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public sealed class DeviceWithTokenResponse
+    {
+        public DeviceResponse Device { get; set; } = new();
+        public string Token { get; set; } = string.Empty;
+    }
+
+    public sealed class DeviceTokenResponse
+    {
+        public Guid DeviceId { get; set; }
+        public string DeviceName { get; set; } = string.Empty;
+        public string Token { get; set; } = string.Empty;
+        public string TokenHint { get; set; } = string.Empty;
+        public DateTime RotatedAtUtc { get; set; }
     }
 }

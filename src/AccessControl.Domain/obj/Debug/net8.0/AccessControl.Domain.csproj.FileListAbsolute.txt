@@ -12,3 +12,4 @@ C:\диплом\AccessControl\src\AccessControl.Domain\obj\Debug\net8.0\ref\Acce
 C:\диплом\AccessControl\src\AccessControl.Domain\bin\Debug\net8.0\AccessControl.Domain.deps.json
 C:\диплом\AccessControl\src\AccessControl.Domain\bin\Debug\net8.0\AccessControl.Domain.dll
 C:\диплом\AccessControl\src\AccessControl.Domain\bin\Debug\net8.0\AccessControl.Domain.pdb
+C:\диплом\AccessControl\src\AccessControl.Domain\obj\Debug\net8.0\AccessControl.Domain.sourcelink.json

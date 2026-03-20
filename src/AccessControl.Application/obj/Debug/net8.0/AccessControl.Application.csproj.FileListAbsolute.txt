@@ -19,3 +19,4 @@ C:\диплом\AccessControl\.tmpbuild\api\AccessControl.Application.pdb
 C:\диплом\AccessControl\.tmpbuild\web\AccessControl.Application.deps.json
 C:\диплом\AccessControl\.tmpbuild\web\AccessControl.Application.dll
 C:\диплом\AccessControl\.tmpbuild\web\AccessControl.Application.pdb
+C:\диплом\AccessControl\src\AccessControl.Application\obj\Debug\net8.0\AccessControl.Application.sourcelink.json

@@ -1,0 +1,45 @@
+﻿@model AccessControl.Web.Models.DeviceFormModel
+@{
+    ViewData["Title"] = "Редактировать устройство";
+}
+
+<h2>Редактировать устройство</h2>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Название</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label">Локация</label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AccessPointId" class="form-label">Точка доступа</label>
+        <select asp-for="AccessPointId" class="form-select">
+            @foreach (var option in Model.AccessPointOptions)
+            {
+                <option value="@(option.Id == Guid.Empty ? string.Empty : option.Id)" selected="@option.Selected">@option.Label</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-check mb-4">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">Активно</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.Id">Отмена</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

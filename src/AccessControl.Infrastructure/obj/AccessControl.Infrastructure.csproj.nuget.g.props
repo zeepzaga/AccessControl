@@ -4,16 +4,16 @@
     <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
-    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">C:\диплом\AccessControl\.nuget\packages</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\диплом\AccessControl\.nuget\packages</NuGetPackageFolders>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Admin\.nuget\packages\</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
     <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">7.0.0</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="C:\диплом\AccessControl\.nuget\packages\" />
+    <SourceRoot Include="C:\Users\Admin\.nuget\packages\" />
   </ItemGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Content Include="$(NuGetPackageRoot)\faceaisharp.models.scrfd.2dot5g_kps\0.20230205.2\contentFiles\any\any\onnx\scrfd_2.5g_kps.onnx" Condition="Exists('$(NuGetPackageRoot)\faceaisharp.models.scrfd.2dot5g_kps\0.20230205.2\contentFiles\any\any\onnx\scrfd_2.5g_kps.onnx')">
+    <Content Include="$(NuGetPackageRoot)faceaisharp.models.scrfd.2dot5g_kps\0.20230205.2\contentFiles\any\any\onnx\scrfd_2.5g_kps.onnx" Condition="Exists('$(NuGetPackageRoot)faceaisharp.models.scrfd.2dot5g_kps\0.20230205.2\contentFiles\any\any\onnx\scrfd_2.5g_kps.onnx')">
       <NuGetPackageId>FaceAiSharp.Models.Scrfd.2dot5g_kps</NuGetPackageId>
       <NuGetPackageVersion>0.20230205.2</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
@@ -26,7 +26,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Content Include="$(NuGetPackageRoot)\faceaisharp.models.openvino.open-closed-eye-0001\0.20220116.2\contentFiles\any\any\onnx\open_closed_eye.onnx" Condition="Exists('$(NuGetPackageRoot)\faceaisharp.models.openvino.open-closed-eye-0001\0.20220116.2\contentFiles\any\any\onnx\open_closed_eye.onnx')">
+    <Content Include="$(NuGetPackageRoot)faceaisharp.models.openvino.open-closed-eye-0001\0.20220116.2\contentFiles\any\any\onnx\open_closed_eye.onnx" Condition="Exists('$(NuGetPackageRoot)faceaisharp.models.openvino.open-closed-eye-0001\0.20220116.2\contentFiles\any\any\onnx\open_closed_eye.onnx')">
       <NuGetPackageId>FaceAiSharp.Models.OpenVino.open-closed-eye-0001</NuGetPackageId>
       <NuGetPackageVersion>0.20220116.2</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
@@ -39,7 +39,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Content Include="$(NuGetPackageRoot)\faceaisharp.models.arcface.lresnet100e-ir-int8\0.20230419.1\contentFiles\any\any\onnx\arcfaceresnet100-11-int8.onnx" Condition="Exists('$(NuGetPackageRoot)\faceaisharp.models.arcface.lresnet100e-ir-int8\0.20230419.1\contentFiles\any\any\onnx\arcfaceresnet100-11-int8.onnx')">
+    <Content Include="$(NuGetPackageRoot)faceaisharp.models.arcface.lresnet100e-ir-int8\0.20230419.1\contentFiles\any\any\onnx\arcfaceresnet100-11-int8.onnx" Condition="Exists('$(NuGetPackageRoot)faceaisharp.models.arcface.lresnet100e-ir-int8\0.20230419.1\contentFiles\any\any\onnx\arcfaceresnet100-11-int8.onnx')">
       <NuGetPackageId>FaceAiSharp.Models.ArcFace.LResNet100E-IR-int8</NuGetPackageId>
       <NuGetPackageVersion>0.20230419.1</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
@@ -52,10 +52,10 @@
     </Content>
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)\microsoft.entityframeworkcore\8.0.4\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)\microsoft.entityframeworkcore\8.0.4\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
-    <Import Project="$(NuGetPackageRoot)\microsoft.entityframeworkcore.design\8.0.4\build\net8.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)\microsoft.entityframeworkcore.design\8.0.4\build\net8.0\Microsoft.EntityFrameworkCore.Design.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.4\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.4\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\8.0.4\build\net8.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\8.0.4\build\net8.0\Microsoft.EntityFrameworkCore.Design.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\диплом\AccessControl\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\Admin\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
   </PropertyGroup>
 </Project>

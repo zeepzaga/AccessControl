@@ -34,3 +34,4 @@ C:\диплом\AccessControl\.tmpbuild\web\AccessControl.Infrastructure.deps.js
 C:\диплом\AccessControl\.tmpbuild\web\AccessControl.Infrastructure.runtimeconfig.json
 C:\диплом\AccessControl\.tmpbuild\web\AccessControl.Infrastructure.dll
 C:\диплом\AccessControl\.tmpbuild\web\AccessControl.Infrastructure.pdb
+C:\диплом\AccessControl\src\AccessControl.Infrastructure\obj\Debug\net8.0\AccessControl.Infrastructure.sourcelink.json

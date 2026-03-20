@@ -10,11 +10,12 @@
         "projectUniqueName": "C:\\диплом\\AccessControl\\src\\AccessControl.Domain\\AccessControl.Domain.csproj",
         "projectName": "AccessControl.Domain",
         "projectPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Domain\\AccessControl.Domain.csproj",
-        "packagesPath": "C:\\диплом\\AccessControl\\.nuget\\packages",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
         "outputPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\диплом\\AccessControl\\NuGet.Config"
+          "C:\\диплом\\AccessControl\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -55,6 +56,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

@@ -1,16 +1,19 @@
 ﻿using AccessControl.Domain.Entities;
 using AccessControl.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AccessControl.Infrastructure.Data;
 
-public class AccessControlDbContext : DbContext
+public class AccessControlDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public AccessControlDbContext(DbContextOptions<AccessControlDbContext> options) : base(options)
     {
     }
 
+    public DbSet<UserRefreshToken> UserRefreshTokens => Set<UserRefreshToken>();
     public DbSet<Employee> Employees => Set<Employee>();
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<EmployeeDepartment> EmployeeDepartments => Set<EmployeeDepartment>();
@@ -24,7 +27,63 @@ public class AccessControlDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.HasPostgresExtension("pgcrypto");
+
+        modelBuilder.Entity<ApplicationUser>(entity =>
+        {
+            entity.ToTable("Users");
+            entity.Property(e => e.FullName).HasColumnName("FullName");
+            entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt").HasColumnType("timestamp without time zone").HasDefaultValueSql("now()");
+        });
+
+        modelBuilder.Entity<IdentityRole<Guid>>(entity =>
+        {
+            entity.ToTable("Roles");
+        });
+
+        modelBuilder.Entity<IdentityUserRole<Guid>>(entity =>
+        {
+            entity.ToTable("UserRoles");
+        });
+
+        modelBuilder.Entity<IdentityUserClaim<Guid>>(entity =>
+        {
+            entity.ToTable("UserClaims");
+        });
+
+        modelBuilder.Entity<IdentityUserLogin<Guid>>(entity =>
+        {
+            entity.ToTable("UserLogins");
+        });
+
+        modelBuilder.Entity<IdentityRoleClaim<Guid>>(entity =>
+        {
+            entity.ToTable("RoleClaims");
+        });
+
+        modelBuilder.Entity<IdentityUserToken<Guid>>(entity =>
+        {
+            entity.ToTable("UserTokens");
+        });
+
+        modelBuilder.Entity<UserRefreshToken>(entity =>
+        {
+            entity.ToTable("UserRefreshTokens");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("Id").HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.UserId).HasColumnName("UserId");
+            entity.Property(e => e.TokenHash).HasColumnName("TokenHash").IsRequired();
+            entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ExpiresAt).HasColumnName("ExpiresAt").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.RevokedAt).HasColumnName("RevokedAt").HasColumnType("timestamp without time zone");
+            entity.HasIndex(e => e.TokenHash).IsUnique();
+            entity.HasOne(e => e.User)
+                .WithMany(u => u.RefreshTokens)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
         modelBuilder.Entity<Employee>(entity =>
         {
@@ -155,6 +214,10 @@ public class AccessControlDbContext : DbContext
             entity.Property(e => e.Name).HasColumnName("Name").IsRequired();
             entity.Property(e => e.Location).HasColumnName("Location");
             entity.Property(e => e.AccessPointId).HasColumnName("AccessPointId");
+            entity.Property(e => e.TokenHint).HasColumnName("TokenHint");
+            entity.Property(e => e.TokenHash).HasColumnName("TokenHash");
+            entity.Property(e => e.TokenLastRotatedAt).HasColumnName("TokenLastRotatedAt").HasColumnType("timestamp without time zone");
+            entity.HasIndex(e => e.TokenHash).IsUnique();
             entity.HasOne(e => e.AccessPoint)
                 .WithMany()
                 .HasForeignKey(e => e.AccessPointId)

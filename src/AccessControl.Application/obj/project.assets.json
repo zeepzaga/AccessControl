@@ -10,7 +10,10 @@
         },
         "runtime": {
           "bin/placeholder/AccessControl.Domain.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -27,7 +30,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\диплом\\AccessControl\\.nuget\\packages": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -35,11 +38,12 @@
       "projectUniqueName": "C:\\диплом\\AccessControl\\src\\AccessControl.Application\\AccessControl.Application.csproj",
       "projectName": "AccessControl.Application",
       "projectPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Application\\AccessControl.Application.csproj",
-      "packagesPath": "C:\\диплом\\AccessControl\\.nuget\\packages",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
       "outputPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\диплом\\AccessControl\\NuGet.Config"
+        "C:\\диплом\\AccessControl\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

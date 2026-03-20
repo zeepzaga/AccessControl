@@ -1,0 +1,64 @@
+﻿@model IReadOnlyCollection<AccessControl.Web.ApiClient.DeviceResponse>
+@{
+    ViewData["Title"] = "Устройства";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h2 class="mb-1">Устройства</h2>
+        <div class="text-muted">Управление контроллерами и их долгоживущими токенами.</div>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Добавить устройство</a>
+</div>
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-6">
+        <label class="form-label">Поиск</label>
+        <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="Название или локация" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Статус</label>
+        <select name="isActive" class="form-select">
+            <option value="">Все</option>
+            <option value="true" selected="@(ViewBag.IsActive is true)">Активные</option>
+            <option value="false" selected="@(ViewBag.IsActive is false)">Неактивные</option>
+        </select>
+    </div>
+    <div class="col-md-3 d-flex align-items-end gap-2">
+        <button type="submit" class="btn btn-outline-primary w-100">Фильтр</button>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Локация</th>
+                <th>Точка доступа</th>
+                <th>Токен</th>
+                <th>Статус</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var device in Model)
+        {
+            <tr>
+                <td>@device.Name</td>
+                <td>@(device.Location ?? "-")</td>
+                <td>@(device.AccessPointName ?? "Не привязана")</td>
+                <td>@(device.TokenHint ?? "Не выпускался")</td>
+                <td>
+                    <span class="badge @(device.IsActive ? "text-bg-success" : "text-bg-secondary")">
+                        @(device.IsActive ? "Активно" : "Выключено")
+                    </span>
+                </td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@device.Id">Открыть</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+п»ї<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -18,30 +18,51 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AccessControl</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Открыть навигацию">
+                        aria-expanded="false" aria-label="РћС‚РєСЂС‹С‚СЊ РЅР°РІРёРіР°С†РёСЋ">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-items-center gap-3">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index">Сотрудники</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="NfcCards" asp-action="Index">Карты</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="AccessPoints" asp-action="Index">Точки доступа</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Schedules" asp-action="Index">Расписания</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="AccessRules" asp-action="Index">Правила доступа</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="AccessEvents" asp-action="Index">Журнал</a>
-                        </li>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index">РЎРѕС‚СЂСѓРґРЅРёРєРё</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="NfcCards" asp-action="Index">РљР°СЂС‚С‹</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="AccessPoints" asp-action="Index">РўРѕС‡РєРё РґРѕСЃС‚СѓРїР°</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Devices" asp-action="Index">РЈСЃС‚СЂРѕР№СЃС‚РІР°</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Schedules" asp-action="Index">Р Р°СЃРїРёСЃР°РЅРёСЏ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="AccessRules" asp-action="Index">РџСЂР°РІРёР»Р° РґРѕСЃС‚СѓРїР°</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="AccessEvents" asp-action="Index">Р–СѓСЂРЅР°Р»</a>
+                            </li>
+                        }
                     </ul>
+
+                    <div class="d-flex align-items-center gap-2">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <span class="navbar-text text-light small">@User.Identity.Name</span>
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-light btn-sm">Р’С‹Р№С‚Рё</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-light btn-sm" asp-controller="Account" asp-action="Login">Р’РѕР№С‚Рё</a>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
@@ -56,9 +77,9 @@
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-start gap-2">
             <div>
                 <div class="footer-title">AccessControl</div>
-                <div class="small">Управление доступом и аудит событий офиса</div>
+                <div class="small">РЈРїСЂР°РІР»РµРЅРёРµ РґРѕСЃС‚СѓРїРѕРј Рё Р°СѓРґРёС‚ СЃРѕР±С‹С‚РёР№ РѕС„РёСЃР°</div>
             </div>
-            <div class="small">&copy; 2026 AccessControl · Все права защищены</div>
+            <div class="small">&copy; 2026 AccessControl В· Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹</div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
