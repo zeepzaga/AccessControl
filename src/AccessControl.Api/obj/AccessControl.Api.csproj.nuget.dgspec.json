@@ -10,12 +10,11 @@
         "projectUniqueName": "C:\\диплом\\AccessControl\\src\\AccessControl.Api\\AccessControl.Api.csproj",
         "projectName": "AccessControl.Api",
         "projectPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Api\\AccessControl.Api.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "packagesPath": "C:\\диплом\\AccessControl\\.nuget\\packages",
         "outputPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\диплом\\AccessControl\\NuGet.Config",
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\диплом\\AccessControl\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -91,12 +90,11 @@
         "projectUniqueName": "C:\\диплом\\AccessControl\\src\\AccessControl.Application\\AccessControl.Application.csproj",
         "projectName": "AccessControl.Application",
         "projectPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Application\\AccessControl.Application.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "packagesPath": "C:\\диплом\\AccessControl\\.nuget\\packages",
         "outputPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\диплом\\AccessControl\\NuGet.Config",
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\диплом\\AccessControl\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -155,12 +153,11 @@
         "projectUniqueName": "C:\\диплом\\AccessControl\\src\\AccessControl.Domain\\AccessControl.Domain.csproj",
         "projectName": "AccessControl.Domain",
         "projectPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Domain\\AccessControl.Domain.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "packagesPath": "C:\\диплом\\AccessControl\\.nuget\\packages",
         "outputPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\диплом\\AccessControl\\NuGet.Config",
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\диплом\\AccessControl\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -215,12 +212,11 @@
         "projectUniqueName": "C:\\диплом\\AccessControl\\src\\AccessControl.Infrastructure\\AccessControl.Infrastructure.csproj",
         "projectName": "AccessControl.Infrastructure",
         "projectPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Infrastructure\\AccessControl.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "packagesPath": "C:\\диплом\\AccessControl\\.nuget\\packages",
         "outputPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\диплом\\AccessControl\\NuGet.Config",
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\диплом\\AccessControl\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

@@ -1,5 +1,6 @@
 ﻿using AccessControl.Application.Access;
 using AccessControl.Domain.Entities;
+using AccessControl.Domain.Enums;
 using AccessControl.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -69,7 +70,12 @@ public class AccessEventsController : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(reason))
         {
-            query = query.Where(e => e.Reason.ToString().Equals(reason, StringComparison.OrdinalIgnoreCase));
+            if (!Enum.TryParse<AccessEventReason>(reason, ignoreCase: true, out var parsedReason))
+            {
+                return BadRequest($"Unknown access event reason '{reason}'.");
+            }
+
+            query = query.Where(e => e.Reason == parsedReason);
         }
 
         if (fromUtc.HasValue)

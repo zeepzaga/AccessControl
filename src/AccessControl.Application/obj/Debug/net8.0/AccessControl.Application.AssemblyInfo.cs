@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AccessControl.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+00e6d776caaea939e7f40f62ae4181b80b14f170")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34a93f273d2890e0a38e91094dfbfe81cc48ba20")]
 [assembly: System.Reflection.AssemblyProductAttribute("AccessControl.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AccessControl.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

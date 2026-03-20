@@ -7695,7 +7695,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\диплом\\AccessControl\\.nuget\\packages": {}
   },
   "project": {
     "version": "1.0.0",
@@ -7703,12 +7703,11 @@
       "projectUniqueName": "C:\\диплом\\AccessControl\\src\\AccessControl.Web\\AccessControl.Web.csproj",
       "projectName": "AccessControl.Web",
       "projectPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Web\\AccessControl.Web.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "packagesPath": "C:\\диплом\\AccessControl\\.nuget\\packages",
       "outputPath": "C:\\диплом\\AccessControl\\src\\AccessControl.Web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\диплом\\AccessControl\\NuGet.Config",
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\диплом\\AccessControl\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
