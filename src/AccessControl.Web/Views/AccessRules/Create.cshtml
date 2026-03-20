@@ -1,0 +1,37 @@
+@model AccessControl.Domain.Entities.AccessRule
+@{
+    ViewData["Title"] = "Добавить правило";
+}
+
+<h2>Добавить правило</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Сотрудник</label>
+        <select class="form-select" asp-for="EmployeeId" asp-items="ViewBag.EmployeeId"></select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Точка доступа</label>
+        <select class="form-select" asp-for="AccessPointId" asp-items="ViewBag.AccessPointId"></select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Расписание</label>
+        <select class="form-select" asp-for="ScheduleId" asp-items="ViewBag.ScheduleId">
+            <option value="">Любое</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ValidFrom" class="form-label">Действует с</label>
+        <input asp-for="ValidFrom" class="form-control" type="datetime-local" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="ValidTo" class="form-label">Действует по</label>
+        <input asp-for="ValidTo" class="form-control" type="datetime-local" />
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">Активно</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+</form>

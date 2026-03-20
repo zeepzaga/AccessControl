@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SimpleSIMD</id>
+    <version>3.3.1</version>
+    <authors>Gilad Freidkin</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <description>Easy to use SIMD accelerated span and array methods</description>
+    <releaseNotes>Major bugfix in subtract operator</releaseNotes>
+    <copyright>Copyright 2020-2021 (c) Gilad Freidkin, All rights reserved</copyright>
+    <tags>SIMD, Library, Performance, Parallel, Math, Generic, Allocation, Array, Span</tags>
+    <repository url="https://github.com/giladfrid009/SimpleSIMD" />
+    <dependencies>
+      <group targetFramework="net5.0" />
+    </dependencies>
+  </metadata>
+</package>

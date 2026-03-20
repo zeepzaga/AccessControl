@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Панель управления";
+}
+
+<div class="hero fade-up">
+    <h1 class="page-title">Панель управления доступом</h1>
+    <p class="page-subtitle">Единый центр для управления сотрудниками, картами, расписаниями и событиями доступа.</p>
+    <div class="hero-grid mt-4">
+        <div class="stat">
+            <div class="stat-title">Контроль</div>
+            <div class="stat-value">Сигналы и события</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">Безопасность</div>
+            <div class="stat-value">Биометрия + NFC</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">Управление</div>
+            <div class="stat-value">Правила и графики</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-4">
+    <div class="col-md-4 fade-up delay-1">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Сотрудники</h5>
+                <p class="card-text">CRUD сотрудников и биометрии.</p>
+                <a class="btn btn-primary" asp-controller="Employees" asp-action="Index">Открыть</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 fade-up delay-2">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Карты NFC</h5>
+                <p class="card-text">Привязка карт и типы доступа.</p>
+                <a class="btn btn-primary" asp-controller="NfcCards" asp-action="Index">Открыть</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 fade-up delay-2">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Журнал</h5>
+                <p class="card-text">События проходов и экспорт.</p>
+                <a class="btn btn-primary" asp-controller="AccessEvents" asp-action="Index">Открыть</a>
+            </div>
+        </div>
+    </div>
+</div>

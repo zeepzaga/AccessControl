@@ -1,0 +1,34 @@
+@model AccessControl.Domain.Entities.NfcCard
+@{
+    ViewData["Title"] = "Добавить карту";
+}
+
+<h2>Добавить карту</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Uid" class="form-label">UID карты</label>
+        <input asp-for="Uid" class="form-control" />
+        <span asp-validation-for="Uid" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Сотрудник</label>
+        <select class="form-select" asp-for="EmployeeId" asp-items="ViewBag.EmployeeId">
+            <option value="">Не привязана</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Тип карты</label>
+        <select class="form-select" asp-for="CardType" asp-items="ViewBag.CardTypes"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ExpiresAt" class="form-label">Срок действия</label>
+        <input asp-for="ExpiresAt" class="form-control" type="datetime-local" />
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">Активна</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+</form>

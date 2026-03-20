@@ -1,0 +1,193 @@
+@model AccessControl.Domain.Entities.Schedule
+@{
+    ViewData["Title"] = "Добавить расписание";
+}
+
+<h2>Добавить расписание</h2>
+
+<form asp-action="Create" method="post" id="scheduleForm">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Название</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Часовой пояс</label>
+                <input class="form-control" id="timezone" value="Europe/Moscow" />
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="defaultAccess" />
+                <label class="form-check-label" for="defaultAccess">Разрешить доступ по умолчанию</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Правила недели</h5>
+            <div id="weeklyRules"></div>
+            <button type="button" class="btn btn-outline-primary mt-3" id="addWeeklyRule">Добавить правило</button>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Исключения по датам</h5>
+            <div id="dateOverrides"></div>
+            <button type="button" class="btn btn-outline-primary mt-3" id="addDateOverride">Добавить исключение</button>
+        </div>
+    </div>
+
+    <textarea asp-for="ScheduleJson" class="form-control" rows="8" id="scheduleJson" style="display:none"></textarea>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+</form>
+
+@section Scripts {
+<script>
+(function () {
+    const weeklyContainer = document.getElementById('weeklyRules');
+    const dateContainer = document.getElementById('dateOverrides');
+
+    function createWeeklyRule(data) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'border rounded p-3 mb-3';
+
+        const days = document.createElement('div');
+        days.className = 'd-flex flex-wrap gap-2 mb-3';
+        const dayNames = [
+            { id: 1, label: 'Пн' },
+            { id: 2, label: 'Вт' },
+            { id: 3, label: 'Ср' },
+            { id: 4, label: 'Чт' },
+            { id: 5, label: 'Пт' },
+            { id: 6, label: 'Сб' },
+            { id: 7, label: 'Вс' }
+        ];
+
+        dayNames.forEach(d => {
+            const checkWrapper = document.createElement('div');
+            checkWrapper.className = 'form-check';
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.className = 'form-check-input';
+            input.value = d.id;
+            if (data?.days?.includes(d.id)) input.checked = true;
+            const label = document.createElement('label');
+            label.className = 'form-check-label';
+            label.textContent = d.label;
+            checkWrapper.appendChild(input);
+            checkWrapper.appendChild(label);
+            days.appendChild(checkWrapper);
+        });
+
+        const intervals = document.createElement('div');
+        intervals.className = 'd-flex flex-column gap-2';
+        const addIntervalBtn = document.createElement('button');
+        addIntervalBtn.type = 'button';
+        addIntervalBtn.className = 'btn btn-sm btn-outline-primary mt-2';
+        addIntervalBtn.textContent = 'Добавить интервал';
+
+        function addInterval(interval) {
+            const row = document.createElement('div');
+            row.className = 'd-flex gap-2 align-items-center';
+            const from = document.createElement('input');
+            from.type = 'time';
+            from.className = 'form-control';
+            from.value = interval?.from ?? '08:00';
+            const to = document.createElement('input');
+            to.type = 'time';
+            to.className = 'form-control';
+            to.value = interval?.to ?? '21:00';
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'btn btn-outline-danger btn-sm';
+            remove.textContent = 'Удалить';
+            remove.onclick = () => row.remove();
+            row.appendChild(from);
+            row.appendChild(to);
+            row.appendChild(remove);
+            intervals.appendChild(row);
+        }
+
+        addIntervalBtn.onclick = () => addInterval();
+        (data?.intervals ?? [{ from: '08:00', to: '21:00' }]).forEach(addInterval);
+
+        const removeRule = document.createElement('button');
+        removeRule.type = 'button';
+        removeRule.className = 'btn btn-sm btn-outline-danger mt-3';
+        removeRule.textContent = 'Удалить правило';
+        removeRule.onclick = () => wrapper.remove();
+
+        wrapper.appendChild(days);
+        wrapper.appendChild(intervals);
+        wrapper.appendChild(addIntervalBtn);
+        wrapper.appendChild(removeRule);
+
+        weeklyContainer.appendChild(wrapper);
+    }
+
+    function createDateOverride(data) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'd-flex gap-2 align-items-center mb-2';
+        const date = document.createElement('input');
+        date.type = 'date';
+        date.className = 'form-control';
+        date.value = data?.date ?? '';
+        const access = document.createElement('select');
+        access.className = 'form-select';
+        access.innerHTML = '<option value="true">Разрешить</option><option value="false">Запретить</option>';
+        access.value = data?.access?.toString() ?? 'false';
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'btn btn-outline-danger btn-sm';
+        remove.textContent = 'Удалить';
+        remove.onclick = () => wrapper.remove();
+        wrapper.appendChild(date);
+        wrapper.appendChild(access);
+        wrapper.appendChild(remove);
+        dateContainer.appendChild(wrapper);
+    }
+
+    document.getElementById('addWeeklyRule').onclick = () => createWeeklyRule();
+    document.getElementById('addDateOverride').onclick = () => createDateOverride();
+
+    createWeeklyRule({ days: [1,2,3,4,5], intervals: [{ from: '08:00', to: '21:00' }] });
+
+    document.getElementById('scheduleForm').addEventListener('submit', function () {
+        const schedule = {
+            timezone: document.getElementById('timezone').value || 'UTC',
+            defaultAccess: document.getElementById('defaultAccess').checked,
+            weeklyRules: [],
+            dateOverrides: []
+        };
+
+        weeklyContainer.querySelectorAll(':scope > div').forEach(rule => {
+            const days = Array.from(rule.querySelectorAll('.form-check-input:checked')).map(x => parseInt(x.value));
+            const intervals = Array.from(rule.querySelectorAll('input[type="time"]')).reduce((acc, input, idx, arr) => {
+                if (idx % 2 === 0) {
+                    acc.push({ from: input.value, to: arr[idx + 1].value });
+                }
+                return acc;
+            }, []);
+            if (days.length && intervals.length) {
+                schedule.weeklyRules.push({ days, intervals });
+            }
+        });
+
+        dateContainer.querySelectorAll(':scope > div').forEach(row => {
+            const date = row.querySelector('input[type="date"]').value;
+            const access = row.querySelector('select').value === 'true';
+            if (date) {
+                schedule.dateOverrides.push({ date, access });
+            }
+        });
+
+        document.getElementById('scheduleJson').value = JSON.stringify(schedule, null, 2);
+    });
+})();
+</script>
+}

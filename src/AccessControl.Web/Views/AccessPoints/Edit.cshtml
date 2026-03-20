@@ -1,0 +1,88 @@
+@model AccessControl.Web.Models.AccessPointFormModel
+@{
+    ViewData["Title"] = "Редактировать точку доступа";
+}
+
+<h2>Редактировать точку доступа</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Название</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label">Расположение</label>
+        <input asp-for="Location" class="form-control" />
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">Активна</label>
+    </div>
+    <div class="form-check mb-4">
+        <input asp-for="IsGuestAccess" class="form-check-input" />
+        <label asp-for="IsGuestAccess" class="form-check-label">Разрешить гостевые карты</label>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-6">
+            <div class="selection-panel">
+                <label class="form-label mb-1">Департаменты с доступом</label>
+                <div class="form-text mb-3">Доступ будет автоматически выдаваться всем сотрудникам из выбранных департаментов.</div>
+                <input type="search" class="form-control mb-3" placeholder="Поиск по названию департамента" data-selection-search-input="departments" />
+                <div class="selection-list" data-selection-search-target="departments">
+                    @foreach (var department in Model.AvailableDepartments)
+                    {
+                        <label class="selection-item" data-filter-text="@department.SearchText.ToLowerInvariant()">
+                            <input class="form-check-input" type="checkbox" name="SelectedDepartmentIds" value="@department.Id" checked="@department.Selected" />
+                            <span>@department.Label</span>
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="selection-panel">
+                <label class="form-label mb-1">Быстрые права сотрудников</label>
+                <div class="form-text mb-3">Здесь управляются простые права без расписания. Расписания и интервалы можно настроить в разделе «Правила доступа».</div>
+                <input type="search" class="form-control mb-3" placeholder="Поиск по ФИО сотрудника" data-selection-search-input="employees" />
+                <div class="selection-list" data-selection-search-target="employees">
+                    @foreach (var employee in Model.AvailableEmployees)
+                    {
+                        <label class="selection-item" data-filter-text="@employee.SearchText.ToLowerInvariant()">
+                            <input class="form-check-input" type="checkbox" name="SelectedEmployeeIds" value="@employee.Id" checked="@employee.Selected" />
+                            <span>@employee.Label</span>
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.ExistingRules.Any())
+    {
+        <div class="mb-4 mt-4">
+            <h5>Текущие правила</h5>
+            <ul class="list-group">
+                @foreach (var rule in Model.ExistingRules)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-start gap-3">
+                        <div>
+                            <div><strong>@(rule.Employee?.FullName ?? "Сотрудник не указан")</strong></div>
+                            <div class="small text-muted">@(rule.Schedule?.Name ?? "Без расписания")</div>
+                        </div>
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="AccessRules" asp-action="Edit" asp-route-id="@rule.Id">Открыть</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+        <a class="btn btn-outline-primary" asp-controller="AccessRules" asp-action="Create" asp-route-accessPointId="@Model.Id">Добавить сложное правило</a>
+    </div>
+</form>

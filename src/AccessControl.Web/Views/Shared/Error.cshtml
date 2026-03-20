@@ -1,0 +1,25 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Ошибка";
+}
+
+<h1 class="text-danger">Ошибка.</h1>
+<h2 class="text-danger">Во время обработки запроса произошла ошибка.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>ID запроса:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>Режим разработки</h3>
+<p>
+    Если переключить приложение в среду <strong>Development</strong>, на странице будет показана подробная информация об ошибке.
+</p>
+<p>
+    <strong>Не включайте среду Development на рабочем сервере.</strong>
+    Это может привести к показу пользователям чувствительных данных из исключений.
+    Для локальной отладки установите переменную среды <strong>ASPNETCORE_ENVIRONMENT</strong> в значение <strong>Development</strong>
+    и перезапустите приложение.
+</p>
