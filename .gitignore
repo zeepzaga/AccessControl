@@ -1,10 +1,17 @@
-# Rider/Visual Studio settings
+# IDE settings
 .idea/
 .vs/
+*.iws
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+
+# Local .NET caches and temporary tooling output
+.dotnet/
+.nuget/
+.tmpbuild/
+.tmpobj/
 
 # Build results
 [Dd]ebug/
@@ -17,10 +24,7 @@ x86/
 bin/
 obj/
 
-# JetBrains Rider
-.idea/
-*.iws
-
-# Other
+# Local runtime artifacts
+*.log
 .DS_Store
 appsettings.Development.json
