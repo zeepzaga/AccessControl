@@ -1,10 +1,10 @@
-using AccessControl.Domain.Entities;
+﻿using AccessControl.Domain.Entities;
 using AccessControl.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessControl.Web.Controllers;
 
-public class SchedulesController : Controller
+public class SchedulesController : AppController
 {
     private readonly ApiClient _api;
 
@@ -60,8 +60,16 @@ public class SchedulesController : Controller
             return View(schedule);
         }
 
-        await _api.CreateScheduleAsync(schedule);
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            await _api.CreateScheduleAsync(schedule);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            SetScreenError("Не удалось сохранить расписание.", ex);
+            return View(schedule);
+        }
     }
 
     public async Task<IActionResult> Edit(Guid id)
@@ -89,8 +97,16 @@ public class SchedulesController : Controller
             return View(schedule);
         }
 
-        await _api.UpdateScheduleAsync(schedule);
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            await _api.UpdateScheduleAsync(schedule);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            SetScreenError("Не удалось сохранить изменения расписания.", ex);
+            return View(schedule);
+        }
     }
 
     public async Task<IActionResult> Delete(Guid id)

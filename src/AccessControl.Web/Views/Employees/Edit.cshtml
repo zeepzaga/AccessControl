@@ -1,43 +1,43 @@
-@model AccessControl.Web.Models.EmployeeFormModel
+п»ї@model AccessControl.Web.Models.EmployeeFormModel
 @{
-    ViewData["Title"] = "Редактировать сотрудника";
+    ViewData["Title"] = "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЃРѕС‚СЂСѓРґРЅРёРєР°";
     var hasPhoto = Model.FaceImage is { Length: > 0 };
     var photoDataUrl = hasPhoto
         ? $"data:image/jpeg;base64,{Convert.ToBase64String(Model.FaceImage!)}"
         : null;
 }
 
-<h2>Редактировать сотрудника</h2>
+<h2>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЃРѕС‚СЂСѓРґРЅРёРєР°</h2>
 
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
     <div class="mb-3">
-        <label asp-for="FullName" class="form-label">ФИО</label>
+        <label asp-for="FullName" class="form-label">Р¤РРћ</label>
         <input asp-for="FullName" class="form-control" />
         <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="DepartmentNamesInput" class="form-label">Департаменты</label>
-        <input asp-for="DepartmentNamesInput" class="form-control" placeholder="Например: IT, Безопасность, Администрация" />
-        <div class="form-text">Укажи несколько департаментов через запятую.</div>
+        <label asp-for="DepartmentNamesInput" class="form-label">Р”РµРїР°СЂС‚Р°РјРµРЅС‚С‹</label>
+        <input asp-for="DepartmentNamesInput" class="form-control" placeholder="РќР°РїСЂРёРјРµСЂ: IT, Р‘РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ, РђРґРјРёРЅРёСЃС‚СЂР°С†РёСЏ" />
+        <div class="form-text">РЈРєР°Р¶Рё РЅРµСЃРєРѕР»СЊРєРѕ РґРµРїР°СЂС‚Р°РјРµРЅС‚РѕРІ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ.</div>
     </div>
     <div class="form-check mb-3">
         <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label">Активен</label>
+        <label asp-for="IsActive" class="form-check-label">РђРєС‚РёРІРµРЅ</label>
     </div>
     @if (hasPhoto)
     {
         <div class="mb-3">
-            <label class="form-label d-block">Текущее фото</label>
-            <img src="@photoDataUrl" alt="Фото сотрудника" class="img-thumbnail" style="max-width: 240px;" />
+            <label class="form-label d-block">РўРµРєСѓС‰РµРµ С„РѕС‚Рѕ</label>
+            <img src="@photoDataUrl" alt="Р¤РѕС‚Рѕ СЃРѕС‚СЂСѓРґРЅРёРєР°" class="img-thumbnail" style="max-width: 240px;" />
         </div>
     }
     <div class="mb-3">
-        <label class="form-label" for="facePhoto">Обновить фото для биометрии</label>
+        <label class="form-label" for="facePhoto">РћР±РЅРѕРІРёС‚СЊ С„РѕС‚Рѕ РґР»СЏ Р±РёРѕРјРµС‚СЂРёРё</label>
         <input id="facePhoto" name="facePhoto" type="file" class="form-control" accept="image/*" />
-        <div class="form-text">Если оставить поле пустым, текущее фото сохранится.</div>
+        <div class="form-text">Р•СЃР»Рё РѕСЃС‚Р°РІРёС‚СЊ РїРѕР»Рµ РїСѓСЃС‚С‹Рј, С‚РµРєСѓС‰РµРµ С„РѕС‚Рѕ СЃРѕС…СЂР°РЅРёС‚СЃСЏ.</div>
         <span asp-validation-for="FaceImage" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+    <button type="submit" class="btn btn-primary">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+    <a class="btn btn-secondary" asp-action="Index">РћС‚РјРµРЅР°</a>
 </form>

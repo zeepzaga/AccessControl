@@ -1,0 +1,31 @@
+﻿@model AccessControl.Web.Models.ErrorViewModel
+
+@if (Model is not null)
+{
+    var errorId = $"screen-error-{Guid.NewGuid():N}";
+
+    <div class="alert app-error-card" role="alert">
+        <div class="app-error-card__header">
+            <div>
+                <div class="app-error-card__title">@Model.Title</div>
+                <div class="app-error-card__message">@Model.Message</div>
+            </div>
+        </div>
+
+        @if (Model.ShowRequestId)
+        {
+            <div class="small text-muted mt-2">ID запроса: <code>@Model.RequestId</code></div>
+        }
+
+        @if (Model.HasDetails)
+        {
+            <details class="app-error-card__details mt-3">
+                <summary>Технические детали</summary>
+                <div class="app-error-card__actions mt-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-copy-error="#@errorId">Скопировать</button>
+                </div>
+                <pre id="@errorId" class="app-error-card__pre">@Model.Details</pre>
+            </details>
+        }
+    </div>
+}

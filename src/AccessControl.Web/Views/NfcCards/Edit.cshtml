@@ -1,35 +1,35 @@
-@model AccessControl.Domain.Entities.NfcCard
+п»ї@model AccessControl.Domain.Entities.NfcCard
 @{
-    ViewData["Title"] = "Редактировать карту";
+    ViewData["Title"] = "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РєР°СЂС‚Сѓ";
 }
 
-<h2>Редактировать карту</h2>
+<h2>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РєР°СЂС‚Сѓ</h2>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="mb-3">
-        <label asp-for="Uid" class="form-label">UID карты</label>
+        <label asp-for="Uid" class="form-label">UID РєР°СЂС‚С‹</label>
         <input asp-for="Uid" class="form-control" />
         <span asp-validation-for="Uid" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label">Сотрудник</label>
+        <label class="form-label">РЎРѕС‚СЂСѓРґРЅРёРє</label>
         <select class="form-select" asp-for="EmployeeId" asp-items="ViewBag.EmployeeId">
-            <option value="">Не привязана</option>
+            <option value="">РќРµ РїСЂРёРІСЏР·Р°РЅР°</option>
         </select>
     </div>
     <div class="mb-3">
-        <label class="form-label">Тип карты</label>
+        <label class="form-label">РўРёРї РєР°СЂС‚С‹</label>
         <select class="form-select" asp-for="CardType" asp-items="ViewBag.CardTypes"></select>
     </div>
     <div class="mb-3">
-        <label asp-for="ExpiresAt" class="form-label">Срок действия</label>
+        <label asp-for="ExpiresAt" class="form-label">РЎСЂРѕРє РґРµР№СЃС‚РІРёСЏ</label>
         <input asp-for="ExpiresAt" class="form-control" type="datetime-local" />
     </div>
     <div class="form-check mb-3">
         <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label">Активна</label>
+        <label asp-for="IsActive" class="form-check-label">РђРєС‚РёРІРЅР°</label>
     </div>
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+    <button type="submit" class="btn btn-primary">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+    <a class="btn btn-secondary" asp-action="Index">РћС‚РјРµРЅР°</a>
 </form>

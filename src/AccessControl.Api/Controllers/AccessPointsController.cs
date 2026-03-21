@@ -22,6 +22,8 @@ public class AccessPointsController : ControllerBase
         IQueryable<AccessPoint> query = _db.AccessPoints
             .Include(a => a.DepartmentAccessPoints)
             .ThenInclude(link => link.Department)
+            .Include(a => a.EmployeeAccessPoints)
+            .ThenInclude(link => link.Employee)
             .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(q))
@@ -49,6 +51,8 @@ public class AccessPointsController : ControllerBase
         var point = await _db.AccessPoints
             .Include(a => a.DepartmentAccessPoints)
             .ThenInclude(link => link.Department)
+            .Include(a => a.EmployeeAccessPoints)
+            .ThenInclude(link => link.Employee)
             .AsNoTracking()
             .FirstOrDefaultAsync(a => a.Id == id);
 
@@ -75,7 +79,7 @@ public class AccessPointsController : ControllerBase
         };
 
         _db.AccessPoints.Add(point);
-        await SyncQuickAccessRulesAsync(point.Id, request.SelectedEmployeeIds, CancellationToken.None);
+        await SyncEmployeesAsync(point, request.SelectedEmployeeIds, CancellationToken.None);
         await SyncDepartmentsAsync(point, request.SelectedDepartmentIds, CancellationToken.None);
         await _db.SaveChangesAsync();
         PopulateDepartmentNames(point);
@@ -99,7 +103,7 @@ public class AccessPointsController : ControllerBase
         existing.IsActive = request.IsActive;
         existing.IsGuestAccess = request.IsGuestAccess;
 
-        await SyncQuickAccessRulesAsync(id, request.SelectedEmployeeIds, CancellationToken.None);
+        await SyncEmployeesAsync(existing, request.SelectedEmployeeIds, CancellationToken.None);
         await SyncDepartmentsAsync(existing, request.SelectedDepartmentIds, CancellationToken.None);
         await _db.SaveChangesAsync();
         return NoContent();
@@ -119,35 +123,32 @@ public class AccessPointsController : ControllerBase
         return NoContent();
     }
 
-    private async Task SyncQuickAccessRulesAsync(Guid accessPointId, IEnumerable<Guid>? employeeIds, CancellationToken cancellationToken)
+    private async Task SyncEmployeesAsync(AccessPoint point, IEnumerable<Guid>? employeeIds, CancellationToken cancellationToken)
     {
         var normalizedEmployeeIds = employeeIds?
             .Where(id => id != Guid.Empty)
             .Distinct()
             .ToHashSet() ?? [];
 
-        var simpleRules = await _db.AccessRules
-            .Where(r => r.AccessPointId == accessPointId && r.ScheduleId == null && r.ValidFrom == null && r.ValidTo == null)
+        var existingLinks = await _db.EmployeeAccessPoints
+            .Where(link => link.AccessPointId == point.Id)
             .ToListAsync(cancellationToken);
 
-        foreach (var existingRule in simpleRules.Where(r => !r.EmployeeId.HasValue || !normalizedEmployeeIds.Contains(r.EmployeeId.Value)).ToList())
+        foreach (var staleLink in existingLinks.Where(link => !normalizedEmployeeIds.Contains(link.EmployeeId)))
         {
-            _db.AccessRules.Remove(existingRule);
+            _db.EmployeeAccessPoints.Remove(staleLink);
         }
 
-        var existingEmployeeIds = simpleRules
-            .Where(r => r.EmployeeId.HasValue)
-            .Select(r => r.EmployeeId!.Value)
+        var currentEmployeeIds = existingLinks
+            .Select(link => link.EmployeeId)
             .ToHashSet();
 
-        foreach (var employeeId in normalizedEmployeeIds.Where(id => !existingEmployeeIds.Contains(id)))
+        foreach (var employeeId in normalizedEmployeeIds.Where(id => !currentEmployeeIds.Contains(id)))
         {
-            _db.AccessRules.Add(new AccessRule
+            _db.EmployeeAccessPoints.Add(new EmployeeAccessPoint
             {
-                Id = Guid.NewGuid(),
                 EmployeeId = employeeId,
-                AccessPointId = accessPointId,
-                IsActive = true
+                AccessPointId = point.Id
             });
         }
     }

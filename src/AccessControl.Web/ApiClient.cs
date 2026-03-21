@@ -26,19 +26,19 @@ public class ApiClient
     public async Task CreateEmployeeAsync(EmployeeUpsertRequest employee)
     {
         var response = await _http.PostAsJsonAsync("api/employees", employee);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task UpdateEmployeeAsync(Guid id, EmployeeUpsertRequest employee)
     {
         var response = await _http.PutAsJsonAsync($"api/employees/{id}", employee);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task DeleteEmployeeAsync(Guid id)
     {
         var response = await _http.DeleteAsync($"api/employees/{id}");
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task<List<Department>> GetDepartmentsAsync(string? q = null) =>
@@ -62,19 +62,19 @@ public class ApiClient
     public async Task CreateCardAsync(NfcCard card)
     {
         var response = await _http.PostAsJsonAsync("api/nfc-cards", card);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task UpdateCardAsync(NfcCard card)
     {
         var response = await _http.PutAsJsonAsync($"api/nfc-cards/{card.Id}", card);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task DeleteCardAsync(Guid id)
     {
         var response = await _http.DeleteAsync($"api/nfc-cards/{id}");
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task<List<AccessPoint>> GetAccessPointsAsync(string? q = null, bool? isActive = null) =>
@@ -90,19 +90,19 @@ public class ApiClient
     public async Task CreateAccessPointAsync(AccessPointUpsertRequest point)
     {
         var response = await _http.PostAsJsonAsync("api/access-points", point);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task UpdateAccessPointAsync(Guid id, AccessPointUpsertRequest point)
     {
         var response = await _http.PutAsJsonAsync($"api/access-points/{id}", point);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task DeleteAccessPointAsync(Guid id)
     {
         var response = await _http.DeleteAsync($"api/access-points/{id}");
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task<List<Schedule>> GetSchedulesAsync(string? q = null) =>
@@ -117,26 +117,24 @@ public class ApiClient
     public async Task CreateScheduleAsync(Schedule schedule)
     {
         var response = await _http.PostAsJsonAsync("api/schedules", schedule);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task UpdateScheduleAsync(Schedule schedule)
     {
         var response = await _http.PutAsJsonAsync($"api/schedules/{schedule.Id}", schedule);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task DeleteScheduleAsync(Guid id)
     {
         var response = await _http.DeleteAsync($"api/schedules/{id}");
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
-    public async Task<List<AccessRule>> GetAccessRulesAsync(Guid? employeeId = null, Guid? accessPointId = null, Guid? scheduleId = null, bool? isActive = null) =>
+    public async Task<List<AccessRule>> GetAccessRulesAsync(Guid? accessPointId = null, Guid? scheduleId = null, bool? isActive = null) =>
         await _http.GetFromJsonAsync<List<AccessRule>>("api/access-rules" + BuildQuery(new Dictionary<string, string?>
-        {
-            ["employeeId"] = employeeId?.ToString(),
-            ["accessPointId"] = accessPointId?.ToString(),
+        {            ["accessPointId"] = accessPointId?.ToString(),
             ["scheduleId"] = scheduleId?.ToString(),
             ["isActive"] = isActive?.ToString()
         })) ?? [];
@@ -147,19 +145,19 @@ public class ApiClient
     public async Task CreateAccessRuleAsync(AccessRule rule)
     {
         var response = await _http.PostAsJsonAsync("api/access-rules", rule);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task UpdateAccessRuleAsync(AccessRule rule)
     {
         var response = await _http.PutAsJsonAsync($"api/access-rules/{rule.Id}", rule);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task DeleteAccessRuleAsync(Guid id)
     {
         var response = await _http.DeleteAsync($"api/access-rules/{id}");
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task<List<AccessEvent>> GetAccessEventsAsync(int take = 200, string? cardUid = null, Guid? employeeId = null, Guid? accessPointId = null, bool? granted = null, string? reason = null, DateTime? fromUtc = null, DateTime? toUtc = null)
@@ -167,9 +165,7 @@ public class ApiClient
         var query = BuildQuery(new Dictionary<string, string?>
         {
             ["take"] = take.ToString(),
-            ["cardUid"] = cardUid,
-            ["employeeId"] = employeeId?.ToString(),
-            ["accessPointId"] = accessPointId?.ToString(),
+            ["cardUid"] = cardUid,            ["accessPointId"] = accessPointId?.ToString(),
             ["granted"] = granted?.ToString(),
             ["reason"] = reason,
             ["fromUtc"] = fromUtc?.ToString("o"),
@@ -191,7 +187,7 @@ public class ApiClient
 
         var url = "api/access-events/export?" + string.Join("&", query);
         using var response = await _http.GetAsync(url);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
 
         var bytes = await response.Content.ReadAsByteArrayAsync();
         var contentType = response.Content.Headers.ContentType?.ToString() ?? "application/octet-stream";
@@ -214,7 +210,7 @@ public class ApiClient
     public async Task<DeviceWithTokenResponse> CreateDeviceAsync(DeviceUpsertRequest device)
     {
         var response = await _http.PostAsJsonAsync("api/devices", device);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
         return await response.Content.ReadFromJsonAsync<DeviceWithTokenResponse>()
             ?? throw new InvalidOperationException("Device creation response was empty.");
     }
@@ -222,13 +218,13 @@ public class ApiClient
     public async Task UpdateDeviceAsync(Guid id, DeviceUpsertRequest device)
     {
         var response = await _http.PutAsJsonAsync($"api/devices/{id}", device);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task<DeviceTokenResponse> RotateDeviceTokenAsync(Guid id)
     {
         var response = await _http.PostAsync($"api/devices/{id}/rotate-token", null);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
         return await response.Content.ReadFromJsonAsync<DeviceTokenResponse>()
             ?? throw new InvalidOperationException("Device token rotation response was empty.");
     }
@@ -236,7 +232,17 @@ public class ApiClient
     public async Task DeleteDeviceAsync(Guid id)
     {
         var response = await _http.DeleteAsync($"api/devices/{id}");
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
+    }
+
+    private async Task EnsureSuccessAsync(HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode)
+        {
+            return;
+        }
+
+        throw await ApiClientException.FromResponseAsync(response);
     }
 
     private static string BuildQuery(Dictionary<string, string?> values)

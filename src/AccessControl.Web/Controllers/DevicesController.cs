@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccessControl.Web.Controllers;
 
-public class DevicesController : Controller
+public class DevicesController : AppController
 {
     private readonly ApiClient _api;
 
@@ -48,17 +48,26 @@ public class DevicesController : Controller
             return View(model);
         }
 
-        var created = await _api.CreateDeviceAsync(new ApiClient.DeviceUpsertRequest
+        try
         {
-            Name = model.Name,
-            Location = model.Location,
-            AccessPointId = model.AccessPointId,
-            IsActive = model.IsActive
-        });
+            var created = await _api.CreateDeviceAsync(new ApiClient.DeviceUpsertRequest
+            {
+                Name = model.Name,
+                Location = model.Location,
+                AccessPointId = model.AccessPointId,
+                IsActive = model.IsActive
+            });
 
-        TempData["GeneratedDeviceToken"] = created.Token;
-        TempData["GeneratedDeviceTokenMessage"] = "Сохрани токен и передай его устройству. Повторно в открытом виде он больше не показывается.";
-        return RedirectToAction(nameof(Details), new { id = created.Device.Id });
+            TempData["GeneratedDeviceToken"] = created.Token;
+            TempData["GeneratedDeviceTokenMessage"] = "Сохрани токен и передай его устройству. Повторно в открытом виде он больше не показывается.";
+            return RedirectToAction(nameof(Details), new { id = created.Device.Id });
+        }
+        catch (Exception ex)
+        {
+            await PopulateAccessPointOptionsAsync(model);
+            SetScreenError("Не удалось сохранить устройство.", ex);
+            return View(model);
+        }
     }
 
     public async Task<IActionResult> Edit(Guid id)
@@ -89,15 +98,24 @@ public class DevicesController : Controller
             return View(model);
         }
 
-        await _api.UpdateDeviceAsync(id, new ApiClient.DeviceUpsertRequest
+        try
         {
-            Name = model.Name,
-            Location = model.Location,
-            AccessPointId = model.AccessPointId,
-            IsActive = model.IsActive
-        });
+            await _api.UpdateDeviceAsync(id, new ApiClient.DeviceUpsertRequest
+            {
+                Name = model.Name,
+                Location = model.Location,
+                AccessPointId = model.AccessPointId,
+                IsActive = model.IsActive
+            });
 
-        return RedirectToAction(nameof(Details), new { id });
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        catch (Exception ex)
+        {
+            await PopulateAccessPointOptionsAsync(model);
+            SetScreenError("Не удалось сохранить изменения устройства.", ex);
+            return View(model);
+        }
     }
 
     [HttpPost]

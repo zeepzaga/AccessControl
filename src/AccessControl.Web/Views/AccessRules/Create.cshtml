@@ -1,37 +1,33 @@
-@model AccessControl.Domain.Entities.AccessRule
+п»ї@model AccessControl.Domain.Entities.AccessRule
 @{
-    ViewData["Title"] = "Добавить правило";
+    ViewData["Title"] = "Р”РѕР±Р°РІРёС‚СЊ РїСЂР°РІРёР»Рѕ";
 }
 
-<h2>Добавить правило</h2>
+<h2>Р”РѕР±Р°РІРёС‚СЊ РїСЂР°РІРёР»Рѕ</h2>
 
 <form asp-action="Create" method="post">
     <div class="mb-3">
-        <label class="form-label">Сотрудник</label>
-        <select class="form-select" asp-for="EmployeeId" asp-items="ViewBag.EmployeeId"></select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Точка доступа</label>
+        <label class="form-label">РўРѕС‡РєР° РґРѕСЃС‚СѓРїР°</label>
         <select class="form-select" asp-for="AccessPointId" asp-items="ViewBag.AccessPointId"></select>
     </div>
     <div class="mb-3">
-        <label class="form-label">Расписание</label>
+        <label class="form-label">Р Р°СЃРїРёСЃР°РЅРёРµ</label>
         <select class="form-select" asp-for="ScheduleId" asp-items="ViewBag.ScheduleId">
-            <option value="">Любое</option>
+            <option value="">Р›СЋР±РѕРµ</option>
         </select>
     </div>
     <div class="mb-3">
-        <label asp-for="ValidFrom" class="form-label">Действует с</label>
+        <label asp-for="ValidFrom" class="form-label">Р”РµР№СЃС‚РІСѓРµС‚ СЃ</label>
         <input asp-for="ValidFrom" class="form-control" type="datetime-local" />
     </div>
     <div class="mb-3">
-        <label asp-for="ValidTo" class="form-label">Действует по</label>
+        <label asp-for="ValidTo" class="form-label">Р”РµР№СЃС‚РІСѓРµС‚ РїРѕ</label>
         <input asp-for="ValidTo" class="form-control" type="datetime-local" />
     </div>
     <div class="form-check mb-3">
         <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label">Активно</label>
+        <label asp-for="IsActive" class="form-check-label">РђРєС‚РёРІРЅРѕ</label>
     </div>
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+    <button type="submit" class="btn btn-primary">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+    <a class="btn btn-secondary" asp-action="Index">РћС‚РјРµРЅР°</a>
 </form>

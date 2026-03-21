@@ -1,4 +1,5 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AccessControl.Web.Models;
 
@@ -19,6 +20,14 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var feature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        var model = ErrorViewModel.FromException(
+            "Во время обработки запроса произошла ошибка. Подробности можно развернуть ниже.",
+            feature?.Error,
+            requestId);
+
+        model.Title = "Что-то пошло не так";
+        return View(model);
     }
 }

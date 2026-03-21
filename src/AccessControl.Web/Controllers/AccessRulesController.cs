@@ -1,11 +1,11 @@
-using AccessControl.Domain.Entities;
+﻿using AccessControl.Domain.Entities;
 using AccessControl.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AccessControl.Web.Controllers;
 
-public class AccessRulesController : Controller
+public class AccessRulesController : AppController
 {
     private readonly ApiClient _api;
 
@@ -15,35 +15,22 @@ public class AccessRulesController : Controller
     }
 
     public async Task<IActionResult> Index(
-        [FromQuery] Guid? employeeId = null,
         [FromQuery] Guid? accessPointId = null,
         [FromQuery] Guid? scheduleId = null,
         [FromQuery] bool? isActive = null,
-        [FromQuery] string sort = "employee",
+        [FromQuery] string sort = "accesspoint",
         [FromQuery] bool desc = false,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 25)
     {
-        var rules = await _api.GetAccessRulesAsync(employeeId, accessPointId, scheduleId, isActive);
-        var employees = await _api.GetEmployeesAsync();
+        var rules = await _api.GetAccessRulesAsync(accessPointId, scheduleId, isActive);
         var points = await _api.GetAccessPointsAsync();
         var schedules = await _api.GetSchedulesAsync();
         var model = PagedListViewModel<AccessRule>.Create(Sort(rules, sort, desc), page, pageSize, sort, desc);
 
-        ViewBag.EmployeeId = employeeId;
         ViewBag.AccessPointId = accessPointId;
         ViewBag.ScheduleId = scheduleId;
         ViewBag.IsActive = isActive;
-        ViewBag.EmployeeOptions = employees
-            .OrderBy(item => item.FullName)
-            .Select(item => new SearchableSelectOptionViewModel
-            {
-                Value = item.Id.ToString(),
-                Label = item.FullName,
-                SearchText = item.FullName,
-                Selected = employeeId == item.Id
-            })
-            .ToList();
         ViewBag.AccessPointOptions = points
             .OrderBy(item => item.Name)
             .Select(item => new SearchableSelectOptionViewModel
@@ -81,15 +68,14 @@ public class AccessRulesController : Controller
         return View(rule);
     }
 
-    public async Task<IActionResult> Create(Guid? employeeId = null, Guid? accessPointId = null, Guid? scheduleId = null)
+    public async Task<IActionResult> Create(Guid? accessPointId = null, Guid? scheduleId = null)
     {
         var model = new AccessRule
         {
-            EmployeeId = employeeId,
             AccessPointId = accessPointId,
             ScheduleId = scheduleId
         };
-        await PopulateLists(model.EmployeeId, model.AccessPointId, model.ScheduleId);
+        await PopulateLists(model.AccessPointId, model.ScheduleId);
         return View(model);
     }
 
@@ -99,12 +85,21 @@ public class AccessRulesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            await PopulateLists(rule.EmployeeId, rule.AccessPointId, rule.ScheduleId);
+            await PopulateLists(rule.AccessPointId, rule.ScheduleId);
             return View(rule);
         }
 
-        await _api.CreateAccessRuleAsync(rule);
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            await _api.CreateAccessRuleAsync(rule);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            await PopulateLists(rule.AccessPointId, rule.ScheduleId);
+            SetScreenError("Не удалось сохранить правило доступа.", ex);
+            return View(rule);
+        }
     }
 
     public async Task<IActionResult> Edit(Guid id)
@@ -115,7 +110,7 @@ public class AccessRulesController : Controller
             return NotFound();
         }
 
-        await PopulateLists(rule.EmployeeId, rule.AccessPointId, rule.ScheduleId);
+        await PopulateLists(rule.AccessPointId, rule.ScheduleId);
         return View(rule);
     }
 
@@ -130,12 +125,21 @@ public class AccessRulesController : Controller
 
         if (!ModelState.IsValid)
         {
-            await PopulateLists(rule.EmployeeId, rule.AccessPointId, rule.ScheduleId);
+            await PopulateLists(rule.AccessPointId, rule.ScheduleId);
             return View(rule);
         }
 
-        await _api.UpdateAccessRuleAsync(rule);
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            await _api.UpdateAccessRuleAsync(rule);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            await PopulateLists(rule.AccessPointId, rule.ScheduleId);
+            SetScreenError("Не удалось сохранить изменения правила доступа.", ex);
+            return View(rule);
+        }
     }
 
     public async Task<IActionResult> Delete(Guid id)
@@ -157,13 +161,11 @@ public class AccessRulesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private async Task PopulateLists(Guid? selectedEmployeeId = null, Guid? selectedAccessPointId = null, Guid? selectedScheduleId = null)
+    private async Task PopulateLists(Guid? selectedAccessPointId = null, Guid? selectedScheduleId = null)
     {
-        var employees = await _api.GetEmployeesAsync();
         var points = await _api.GetAccessPointsAsync();
         var schedules = await _api.GetSchedulesAsync();
 
-        ViewBag.EmployeeId = new SelectList(employees, "Id", "FullName", selectedEmployeeId);
         ViewBag.AccessPointId = new SelectList(points, "Id", "Name", selectedAccessPointId);
         ViewBag.ScheduleId = new SelectList(schedules, "Id", "Name", selectedScheduleId);
     }
@@ -172,14 +174,13 @@ public class AccessRulesController : Controller
     {
         Func<AccessRule, object?> keySelector = sort.ToLowerInvariant() switch
         {
-            "accesspoint" => rule => rule.AccessPoint?.Name,
             "schedule" => rule => rule.Schedule?.Name,
             "status" => rule => rule.IsActive,
-            _ => rule => rule.Employee?.FullName
+            _ => rule => rule.AccessPoint?.Name
         };
 
         return desc
-            ? rules.OrderByDescending(keySelector).ThenBy(rule => rule.Employee?.FullName)
-            : rules.OrderBy(keySelector).ThenBy(rule => rule.Employee?.FullName);
+            ? rules.OrderByDescending(keySelector).ThenBy(rule => rule.AccessPoint?.Name)
+            : rules.OrderBy(keySelector).ThenBy(rule => rule.AccessPoint?.Name);
     }
 }

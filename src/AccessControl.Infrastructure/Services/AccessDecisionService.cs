@@ -95,63 +95,59 @@ public class AccessDecisionService : IAccessDecisionService
             return (false, AccessEventReason.AccessDenied);
         }
 
-        var employeeAccessAllowed = false;
-        var employeeDenyReason = AccessEventReason.AccessDenied;
-
-        var rules = await _db.AccessRules
-            .Include(r => r.Schedule)
+        var directAccess = await _db.EmployeeAccessPoints
             .AsNoTracking()
-            .Where(r => r.IsActive && r.EmployeeId == employeeId && r.AccessPointId == accessPointId.Value)
-            .ToListAsync(cancellationToken);
-
-        if (rules.Count > 0)
-        {
-            var sawScheduleDenied = false;
-
-            foreach (var rule in rules)
-            {
-                if (rule.ValidFrom.HasValue && rule.ValidFrom.Value.ToUniversalTime() > eventTimeUtc)
-                {
-                    continue;
-                }
-
-                if (rule.ValidTo.HasValue && rule.ValidTo.Value.ToUniversalTime() < eventTimeUtc)
-                {
-                    continue;
-                }
-
-                if (rule.Schedule is null)
-                {
-                    employeeAccessAllowed = true;
-                    break;
-                }
-
-                if (IsScheduleAllowed(rule.Schedule.ScheduleJson, eventTimeUtc))
-                {
-                    employeeAccessAllowed = true;
-                    break;
-                }
-
-                sawScheduleDenied = true;
-            }
-
-            if (sawScheduleDenied)
-            {
-                return (false, AccessEventReason.ScheduleDenied);
-            }
-        }
+            .AnyAsync(link => link.AccessPointId == accessPointId.Value && link.EmployeeId == employeeId, cancellationToken);
 
         var departmentAccess = await _db.DepartmentAccessPoints
             .AsNoTracking()
             .AnyAsync(link => link.AccessPointId == accessPointId.Value
                 && _db.EmployeeDepartments.Any(ed => ed.EmployeeId == employeeId && ed.DepartmentId == link.DepartmentId), cancellationToken);
 
-        if (employeeAccessAllowed || departmentAccess)
+        if (!directAccess && !departmentAccess)
+        {
+            return (false, AccessEventReason.AccessDenied);
+        }
+
+        var rules = await _db.AccessRules
+            .Include(r => r.Schedule)
+            .AsNoTracking()
+            .Where(r => r.IsActive && r.AccessPointId == accessPointId.Value)
+            .ToListAsync(cancellationToken);
+
+        if (rules.Count == 0)
         {
             return (true, AccessEventReason.OK);
         }
 
-        return (false, employeeDenyReason);
+        var sawScheduleDenied = false;
+
+        foreach (var rule in rules)
+        {
+            if (rule.ValidFrom.HasValue && rule.ValidFrom.Value.ToUniversalTime() > eventTimeUtc)
+            {
+                continue;
+            }
+
+            if (rule.ValidTo.HasValue && rule.ValidTo.Value.ToUniversalTime() < eventTimeUtc)
+            {
+                continue;
+            }
+
+            if (rule.Schedule is null)
+            {
+                return (true, AccessEventReason.OK);
+            }
+
+            if (IsScheduleAllowed(rule.Schedule.ScheduleJson, eventTimeUtc))
+            {
+                return (true, AccessEventReason.OK);
+            }
+
+            sawScheduleDenied = true;
+        }
+
+        return (false, sawScheduleDenied ? AccessEventReason.ScheduleDenied : AccessEventReason.AccessDenied);
     }
 
     private static bool IsScheduleAllowed(string scheduleJson, DateTime eventTimeUtc)

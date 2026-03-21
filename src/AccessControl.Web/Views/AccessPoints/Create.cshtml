@@ -1,35 +1,35 @@
-@model AccessControl.Web.Models.AccessPointFormModel
+п»ї@model AccessControl.Web.Models.AccessPointFormModel
 @{
-    ViewData["Title"] = "Добавить точку доступа";
+    ViewData["Title"] = "Р”РѕР±Р°РІРёС‚СЊ С‚РѕС‡РєСѓ РґРѕСЃС‚СѓРїР°";
 }
 
-<h2>Добавить точку доступа</h2>
+<h2>Р”РѕР±Р°РІРёС‚СЊ С‚РѕС‡РєСѓ РґРѕСЃС‚СѓРїР°</h2>
 
 <form asp-action="Create" method="post">
     <div class="mb-3">
-        <label asp-for="Name" class="form-label">Название</label>
+        <label asp-for="Name" class="form-label">РќР°Р·РІР°РЅРёРµ</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="Location" class="form-label">Расположение</label>
+        <label asp-for="Location" class="form-label">Р Р°СЃРїРѕР»РѕР¶РµРЅРёРµ</label>
         <input asp-for="Location" class="form-control" />
     </div>
     <div class="form-check mb-3">
         <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label">Активна</label>
+        <label asp-for="IsActive" class="form-check-label">РђРєС‚РёРІРЅР°</label>
     </div>
     <div class="form-check mb-4">
         <input asp-for="IsGuestAccess" class="form-check-input" />
-        <label asp-for="IsGuestAccess" class="form-check-label">Разрешить гостевые карты</label>
+        <label asp-for="IsGuestAccess" class="form-check-label">Р Р°Р·СЂРµС€РёС‚СЊ РіРѕСЃС‚РµРІС‹Рµ РєР°СЂС‚С‹</label>
     </div>
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
             <div class="selection-panel">
-                <label class="form-label mb-1">Департаменты с доступом</label>
-                <div class="form-text mb-3">Все сотрудники из выбранных департаментов получат доступ к этой точке без отдельного правила.</div>
-                <input type="search" class="form-control mb-3" placeholder="Поиск по названию департамента" data-selection-search-input="departments" />
+                <label class="form-label mb-1">Р”РµРїР°СЂС‚Р°РјРµРЅС‚С‹ СЃ РґРѕСЃС‚СѓРїРѕРј</label>
+                <div class="form-text mb-3">Р’СЃРµ СЃРѕС‚СЂСѓРґРЅРёРєРё РёР· РІС‹Р±СЂР°РЅРЅС‹С… РґРµРїР°СЂС‚Р°РјРµРЅС‚РѕРІ РїРѕР»СѓС‡Р°С‚ РґРѕСЃС‚СѓРї Рє СЌС‚РѕР№ С‚РѕС‡РєРµ Р±РµР· РѕС‚РґРµР»СЊРЅРѕРіРѕ РїСЂР°РІРёР»Р°.</div>
+                <input type="search" class="form-control mb-3" placeholder="РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ РґРµРїР°СЂС‚Р°РјРµРЅС‚Р°" data-selection-search-input="departments" />
                 <div class="selection-list" data-selection-search-target="departments">
                     @foreach (var department in Model.AvailableDepartments)
                     {
@@ -44,9 +44,9 @@
 
         <div class="col-12 col-lg-6">
             <div class="selection-panel">
-                <label class="form-label mb-1">Быстрые права для сотрудников</label>
-                <div class="form-text mb-3">Создаст простые активные права на эту точку без расписания. Сложные правила можно настроить позже в разделе «Правила доступа».</div>
-                <input type="search" class="form-control mb-3" placeholder="Поиск по ФИО сотрудника" data-selection-search-input="employees" />
+                <label class="form-label mb-1">РЎРѕС‚СЂСѓРґРЅРёРєРё СЃ РїСЂСЏРјС‹Рј РґРѕСЃС‚СѓРїРѕРј</label>
+                <div class="form-text mb-3">Р’С‹Р±СЂР°РЅРЅС‹Рµ СЃРѕС‚СЂСѓРґРЅРёРєРё РїРѕР»СѓС‡Р°С‚ РѕС‚РґРµР»СЊРЅСѓСЋ СЃРІСЏР·СЊ СЃ СЌС‚РѕР№ С‚РѕС‡РєРѕР№ РґРѕСЃС‚СѓРїР°. Р Р°СЃРїРёСЃР°РЅРёСЏ Рё РѕРіСЂР°РЅРёС‡РµРЅРёСЏ Р·Р°РґР°СЋС‚СЃСЏ РѕС‚РґРµР»СЊРЅРѕ РІ СЂР°Р·РґРµР»Рµ В«РџСЂР°РІРёР»Р° РґРѕСЃС‚СѓРїР°В».</div>
+                <input type="search" class="form-control mb-3" placeholder="РџРѕРёСЃРє РїРѕ Р¤РРћ СЃРѕС‚СЂСѓРґРЅРёРєР°" data-selection-search-input="employees" />
                 <div class="selection-list" data-selection-search-target="employees">
                     @foreach (var employee in Model.AvailableEmployees)
                     {
@@ -61,7 +61,7 @@
     </div>
 
     <div class="mt-4 d-flex flex-wrap gap-2">
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-        <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+        <button type="submit" class="btn btn-primary">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+        <a class="btn btn-secondary" asp-action="Index">РћС‚РјРµРЅР°</a>
     </div>
 </form>

@@ -1,10 +1,10 @@
-using AccessControl.Domain.Entities;
+﻿using AccessControl.Domain.Entities;
 using AccessControl.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessControl.Web.Controllers;
 
-public class AccessPointsController : Controller
+public class AccessPointsController : AppController
 {
     private readonly ApiClient _api;
 
@@ -64,17 +64,26 @@ public class AccessPointsController : Controller
             return View(model);
         }
 
-        await _api.CreateAccessPointAsync(new ApiClient.AccessPointUpsertRequest
+        try
         {
-            Name = model.Name,
-            Location = model.Location,
-            IsActive = model.IsActive,
-            IsGuestAccess = model.IsGuestAccess,
-            SelectedEmployeeIds = model.SelectedEmployeeIds,
-            SelectedDepartmentIds = model.SelectedDepartmentIds
-        });
+            await _api.CreateAccessPointAsync(new ApiClient.AccessPointUpsertRequest
+            {
+                Name = model.Name,
+                Location = model.Location,
+                IsActive = model.IsActive,
+                IsGuestAccess = model.IsGuestAccess,
+                SelectedEmployeeIds = model.SelectedEmployeeIds,
+                SelectedDepartmentIds = model.SelectedDepartmentIds
+            });
 
-        return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            await PopulateSelectionsAsync(model);
+            SetScreenError("Не удалось сохранить точку доступа.", ex);
+            return View(model);
+        }
     }
 
     public async Task<IActionResult> Edit(Guid id)
@@ -109,17 +118,27 @@ public class AccessPointsController : Controller
             return View(model);
         }
 
-        await _api.UpdateAccessPointAsync(id, new ApiClient.AccessPointUpsertRequest
+        try
         {
-            Name = model.Name,
-            Location = model.Location,
-            IsActive = model.IsActive,
-            IsGuestAccess = model.IsGuestAccess,
-            SelectedEmployeeIds = model.SelectedEmployeeIds,
-            SelectedDepartmentIds = model.SelectedDepartmentIds
-        });
+            await _api.UpdateAccessPointAsync(id, new ApiClient.AccessPointUpsertRequest
+            {
+                Name = model.Name,
+                Location = model.Location,
+                IsActive = model.IsActive,
+                IsGuestAccess = model.IsGuestAccess,
+                SelectedEmployeeIds = model.SelectedEmployeeIds,
+                SelectedDepartmentIds = model.SelectedDepartmentIds
+            });
 
-        return RedirectToAction(nameof(Details), new { id });
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        catch (Exception ex)
+        {
+            model.ExistingRules = await _api.GetAccessRulesAsync(accessPointId: id);
+            await PopulateSelectionsAsync(model);
+            SetScreenError("Не удалось сохранить изменения точки доступа.", ex);
+            return View(model);
+        }
     }
 
     public async Task<IActionResult> Delete(Guid id)

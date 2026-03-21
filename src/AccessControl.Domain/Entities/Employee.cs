@@ -24,6 +24,9 @@ public class Employee
     [JsonIgnore]
     public ICollection<EmployeeDepartment> EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
 
+    [JsonIgnore]
+    public ICollection<EmployeeAccessPoint> EmployeeAccessPoints { get; set; } = new List<EmployeeAccessPoint>();
+
     [NotMapped]
     public List<string> DepartmentNames { get; set; } = new();
 }

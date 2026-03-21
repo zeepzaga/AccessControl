@@ -410,3 +410,48 @@ textarea::placeholder,
 .searchable-select .form-select {
   min-height: 42px;
 }
+
+.app-error-card {
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(127, 29, 29, 0.22);
+  color: var(--ac-text);
+  border-radius: var(--ac-radius);
+  box-shadow: var(--ac-shadow);
+}
+
+.app-error-card__title {
+  font-family: var(--ac-font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fecaca;
+}
+
+.app-error-card__message {
+  margin-top: 0.35rem;
+  color: #fee2e2;
+}
+
+.app-error-card__details summary {
+  cursor: pointer;
+  color: #fecaca;
+  font-weight: 600;
+}
+
+.app-error-card__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.app-error-card__pre {
+  margin: 0.75rem 0 0;
+  padding: 1rem;
+  max-height: 22rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-radius: var(--ac-radius-sm);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.72);
+  color: #e2e8f0;
+}

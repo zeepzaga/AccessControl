@@ -1,6 +1,6 @@
-@model AccessControl.Web.Models.PagedListViewModel<AccessControl.Domain.Entities.Schedule>
+п»ї@model AccessControl.Web.Models.PagedListViewModel<AccessControl.Domain.Entities.Schedule>
 @{
-    ViewData["Title"] = "Расписания";
+    ViewData["Title"] = "Р Р°СЃРїРёСЃР°РЅРёСЏ";
     var currentSort = ViewBag.Sort as string ?? "name";
     var currentDesc = ViewBag.Desc is bool b && b;
     var query = ViewBag.Query as string;
@@ -24,7 +24,7 @@
     }) ?? "#";
 }
 
-<h2>Расписания</h2>
+<h2>Р Р°СЃРїРёСЃР°РЅРёСЏ</h2>
 
 <div class="card mb-3">
     <div class="card-body">
@@ -33,15 +33,15 @@
             <input type="hidden" name="desc" value="@currentDesc.ToString().ToLowerInvariant()" />
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
             <div class="col-12 col-md-8">
-                <label class="form-label">Поиск</label>
-                <input type="text" name="q" value="@query" class="form-control" placeholder="Введите название расписания" />
+                <label class="form-label">РџРѕРёСЃРє</label>
+                <input type="text" name="q" value="@query" class="form-control" placeholder="Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЂР°СЃРїРёСЃР°РЅРёСЏ" />
             </div>
             <div class="col-12 col-md-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary w-100">Применить</button>
+                <button type="submit" class="btn btn-primary w-100">РџСЂРёРјРµРЅРёС‚СЊ</button>
             </div>
             <div class="col-12 d-flex flex-wrap gap-2">
-                <a class="btn btn-outline-secondary" asp-action="Index">Сбросить</a>
-                <a class="btn btn-outline-primary ms-auto" asp-action="Create">Добавить</a>
+                <a class="btn btn-outline-secondary" asp-action="Index">РЎР±СЂРѕСЃРёС‚СЊ</a>
+                <a class="btn btn-outline-primary ms-auto" asp-action="Create">Р”РѕР±Р°РІРёС‚СЊ</a>
             </div>
         </form>
     </div>
@@ -53,7 +53,7 @@
         <input type="hidden" name="sort" value="@currentSort" />
         <input type="hidden" name="desc" value="@currentDesc.ToString().ToLowerInvariant()" />
         <input type="hidden" name="page" value="1" />
-        <label class="small text-muted text-nowrap" for="schedulePageSize">Отображать на странице</label>
+        <label class="small text-muted text-nowrap" for="schedulePageSize">РћС‚РѕР±СЂР°Р¶Р°С‚СЊ РЅР° СЃС‚СЂР°РЅРёС†Рµ</label>
         <select id="schedulePageSize" name="pageSize" class="form-select form-select-sm" onchange="this.form.submit()">
             @foreach (var size in Model.PageSizeOptions)
             {
@@ -61,16 +61,16 @@
             }
         </select>
     </form>
-    <div class="small text-muted">Показаны записи @Model.StartItem-@Model.EndItem из @Model.TotalCount</div>
+    <div class="small text-muted">РџРѕРєР°Р·Р°РЅС‹ Р·Р°РїРёСЃРё @Model.StartItem-@Model.EndItem РёР· @Model.TotalCount</div>
 </div>
 
 <div class="table-responsive">
     <table class="table table-modern align-middle">
         <thead>
         <tr>
-            <th><a class="sort-link" href="@SortUrl("name")">Название @(currentSort == "name" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("created")">Создано @(currentSort == "created" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th class="text-end">Действия</th>
+            <th><a class="sort-link" href="@SortUrl("name")">РќР°Р·РІР°РЅРёРµ @(currentSort == "name" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("created")">РЎРѕР·РґР°РЅРѕ @(currentSort == "created" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th class="text-end">Р”РµР№СЃС‚РІРёСЏ</th>
         </tr>
         </thead>
         <tbody>
@@ -82,9 +82,9 @@
                     <td>@item.Name</td>
                     <td>@item.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
                     <td class="text-end">
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Просмотр</a>
-                        <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">РџСЂРѕСЃРјРѕС‚СЂ</a>
+                        <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">РР·РјРµРЅРёС‚СЊ</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">РЈРґР°Р»РёС‚СЊ</a>
                     </td>
                 </tr>
             }
@@ -92,17 +92,17 @@
         else
         {
             <tr>
-                <td colspan="3" class="text-center py-4 text-muted">Ничего не найдено.</td>
+                <td colspan="3" class="text-center py-4 text-muted">РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</td>
             </tr>
         }
         </tbody>
     </table>
 </div>
 
-<nav class="mt-3" aria-label="Пагинация расписаний">
+<nav class="mt-3" aria-label="РџР°РіРёРЅР°С†РёСЏ СЂР°СЃРїРёСЃР°РЅРёР№">
     <ul class="pagination pagination-sm mb-0 justify-content-center">
-        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(1)" aria-label="Первая страница">«</a></li>
-        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page - 1)" aria-label="Предыдущая страница">‹</a></li>
+        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(1)" aria-label="РџРµСЂРІР°СЏ СЃС‚СЂР°РЅРёС†Р°">В«</a></li>
+        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page - 1)" aria-label="РџСЂРµРґС‹РґСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">вЂ№</a></li>
         @for (var i = 1; i <= Model.TotalPages; i++)
         {
             if (i < Model.Page - 2 || i > Model.Page + 2)
@@ -112,8 +112,8 @@
 
             <li class="page-item @(i == Model.Page ? "active" : null)"><a class="page-link" href="@PageUrl(i)">@i</a></li>
         }
-        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page + 1)" aria-label="Следующая страница">›</a></li>
-        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.TotalPages)" aria-label="Последняя страница">»</a></li>
+        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page + 1)" aria-label="РЎР»РµРґСѓСЋС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">вЂє</a></li>
+        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.TotalPages)" aria-label="РџРѕСЃР»РµРґРЅСЏСЏ СЃС‚СЂР°РЅРёС†Р°">В»</a></li>
     </ul>
 </nav>
 

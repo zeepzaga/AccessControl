@@ -125,10 +125,6 @@ namespace AccessControl.Infrastructure.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("AccessPointId");
 
-                    b.Property<Guid?>("EmployeeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("EmployeeId");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -150,8 +146,6 @@ namespace AccessControl.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccessPointId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("ScheduleId");
 
@@ -373,6 +367,23 @@ namespace AccessControl.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees", (string)null);
+                });
+
+            modelBuilder.Entity("AccessControl.Domain.Entities.EmployeeAccessPoint", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("EmployeeId");
+
+                    b.Property<Guid>("AccessPointId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("AccessPointId");
+
+                    b.HasKey("EmployeeId", "AccessPointId");
+
+                    b.HasIndex("AccessPointId");
+
+                    b.ToTable("EmployeeAccessPoints", (string)null);
                 });
 
             modelBuilder.Entity("AccessControl.Domain.Entities.EmployeeDepartment", b =>
@@ -671,19 +682,12 @@ namespace AccessControl.Infrastructure.Data.Migrations
                         .HasForeignKey("AccessPointId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AccessControl.Domain.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("AccessControl.Domain.Entities.Schedule", "Schedule")
                         .WithMany()
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("AccessPoint");
-
-                    b.Navigation("Employee");
 
                     b.Navigation("Schedule");
                 });
@@ -715,6 +719,25 @@ namespace AccessControl.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("AccessPoint");
+                });
+
+            modelBuilder.Entity("AccessControl.Domain.Entities.EmployeeAccessPoint", b =>
+                {
+                    b.HasOne("AccessControl.Domain.Entities.AccessPoint", "AccessPoint")
+                        .WithMany("EmployeeAccessPoints")
+                        .HasForeignKey("AccessPointId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccessControl.Domain.Entities.Employee", "Employee")
+                        .WithMany("EmployeeAccessPoints")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AccessPoint");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("AccessControl.Domain.Entities.EmployeeDepartment", b =>
@@ -813,6 +836,8 @@ namespace AccessControl.Infrastructure.Data.Migrations
                     b.Navigation("AccessRules");
 
                     b.Navigation("DepartmentAccessPoints");
+
+                    b.Navigation("EmployeeAccessPoints");
                 });
 
             modelBuilder.Entity("AccessControl.Domain.Entities.ApplicationUser", b =>
@@ -830,6 +855,8 @@ namespace AccessControl.Infrastructure.Data.Migrations
             modelBuilder.Entity("AccessControl.Domain.Entities.Employee", b =>
                 {
                     b.Navigation("Cards");
+
+                    b.Navigation("EmployeeAccessPoints");
 
                     b.Navigation("EmployeeDepartments");
                 });

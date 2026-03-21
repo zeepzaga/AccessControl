@@ -1,25 +1,18 @@
-@model ErrorViewModel
+п»ї@model ErrorViewModel
 @{
-    ViewData["Title"] = "Ошибка";
+    ViewData["Title"] = "РћС€РёР±РєР°";
 }
 
-<h1 class="text-danger">Ошибка.</h1>
-<h2 class="text-danger">Во время обработки запроса произошла ошибка.</h2>
+<div class="card">
+    <div class="card-body">
+        <h1 class="page-title mb-3">@Model.Title</h1>
+        <p class="page-subtitle mb-4">@Model.Message</p>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>ID запроса:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+        <partial name="_ScreenError" model="Model" />
 
-<h3>Режим разработки</h3>
-<p>
-    Если переключить приложение в среду <strong>Development</strong>, на странице будет показана подробная информация об ошибке.
-</p>
-<p>
-    <strong>Не включайте среду Development на рабочем сервере.</strong>
-    Это может привести к показу пользователям чувствительных данных из исключений.
-    Для локальной отладки установите переменную среды <strong>ASPNETCORE_ENVIRONMENT</strong> в значение <strong>Development</strong>
-    и перезапустите приложение.
-</p>
+        <div class="mt-4 d-flex gap-2 flex-wrap">
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">РќР° РіР»Р°РІРЅСѓСЋ</a>
+            <button type="button" class="btn btn-outline-secondary" onclick="history.back()">РќР°Р·Р°Рґ</button>
+        </div>
+    </div>
+</div>

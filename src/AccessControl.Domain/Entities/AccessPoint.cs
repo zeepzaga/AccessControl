@@ -23,6 +23,9 @@ public class AccessPoint
     [JsonIgnore]
     public ICollection<DepartmentAccessPoint> DepartmentAccessPoints { get; set; } = new List<DepartmentAccessPoint>();
 
+    [JsonIgnore]
+    public ICollection<EmployeeAccessPoint> EmployeeAccessPoints { get; set; } = new List<EmployeeAccessPoint>();
+
     [NotMapped]
     public List<string> DepartmentNames { get; set; } = new();
 }

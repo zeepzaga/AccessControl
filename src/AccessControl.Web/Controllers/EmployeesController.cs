@@ -1,9 +1,9 @@
-using AccessControl.Web.Models;
+﻿using AccessControl.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessControl.Web.Controllers;
 
-public class EmployeesController : Controller
+public class EmployeesController : AppController
 {
     private readonly ApiClient _api;
 
@@ -52,8 +52,6 @@ public class EmployeesController : Controller
             return NotFound();
         }
 
-        var rules = await _api.GetAccessRulesAsync(employeeId: id);
-        ViewBag.AccessRules = rules;
         return View(employee);
     }
 
@@ -73,15 +71,23 @@ public class EmployeesController : Controller
             return View(model);
         }
 
-        await _api.CreateEmployeeAsync(new ApiClient.EmployeeUpsertRequest
+        try
         {
-            FullName = model.FullName,
-            IsActive = model.IsActive,
-            FaceImage = model.FaceImage,
-            DepartmentNamesInput = model.DepartmentNamesInput
-        });
+            await _api.CreateEmployeeAsync(new ApiClient.EmployeeUpsertRequest
+            {
+                FullName = model.FullName,
+                IsActive = model.IsActive,
+                FaceImage = model.FaceImage,
+                DepartmentNamesInput = model.DepartmentNamesInput
+            });
 
-        return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            SetScreenError("Не удалось сохранить сотрудника.", ex);
+            return View(model);
+        }
     }
 
     public async Task<IActionResult> Edit(Guid id)
@@ -122,15 +128,26 @@ public class EmployeesController : Controller
 
         var faceImage = model.FaceImage is { Length: > 0 } ? model.FaceImage : existing.FaceImage;
 
-        await _api.UpdateEmployeeAsync(id, new ApiClient.EmployeeUpsertRequest
+        try
         {
-            FullName = model.FullName,
-            IsActive = model.IsActive,
-            FaceImage = faceImage,
-            DepartmentNamesInput = model.DepartmentNamesInput
-        });
+            await _api.UpdateEmployeeAsync(id, new ApiClient.EmployeeUpsertRequest
+            {
+                FullName = model.FullName,
+                IsActive = model.IsActive,
+                FaceImage = faceImage,
+                DepartmentNamesInput = model.DepartmentNamesInput
+            });
 
-        return RedirectToAction(nameof(Details), new { id });
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        catch (Exception ex)
+        {
+            model.FaceImage = existing.FaceImage;
+            model.FaceEmbedding = existing.FaceEmbedding;
+            model.BiometricUpdatedAt = existing.BiometricUpdatedAt;
+            SetScreenError("Не удалось сохранить изменения сотрудника.", ex);
+            return View(model);
+        }
     }
 
     public async Task<IActionResult> Delete(Guid id)
@@ -161,13 +178,13 @@ public class EmployeesController : Controller
 
         if (facePhoto.Length > 5 * 1024 * 1024)
         {
-            ModelState.AddModelError(nameof(model.FaceImage), "���������� ������ ���� �� ������ 5 ��.");
+            ModelState.AddModelError(nameof(model.FaceImage), "Фотография должна быть не больше 5 МБ.");
             return;
         }
 
         if (facePhoto.ContentType is null || !facePhoto.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
         {
-            ModelState.AddModelError(nameof(model.FaceImage), "����� ��������� �����������.");
+            ModelState.AddModelError(nameof(model.FaceImage), "Нужно загрузить изображение.");
             return;
         }
 

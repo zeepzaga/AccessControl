@@ -1,6 +1,6 @@
-@model AccessControl.Web.Models.PagedListViewModel<AccessControl.Domain.Entities.AccessPoint>
+п»ї@model AccessControl.Web.Models.PagedListViewModel<AccessControl.Domain.Entities.AccessPoint>
 @{
-    ViewData["Title"] = "Точки доступа";
+    ViewData["Title"] = "РўРѕС‡РєРё РґРѕСЃС‚СѓРїР°";
     var currentSort = ViewBag.Sort as string ?? "name";
     var currentDesc = ViewBag.Desc is bool b && b;
     var query = ViewBag.Query as string;
@@ -27,7 +27,7 @@
     }) ?? "#";
 }
 
-<h2>Точки доступа</h2>
+<h2>РўРѕС‡РєРё РґРѕСЃС‚СѓРїР°</h2>
 
 <div class="card mb-3">
     <div class="card-body">
@@ -36,23 +36,23 @@
             <input type="hidden" name="desc" value="@currentDesc.ToString().ToLowerInvariant()" />
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
             <div class="col-12 col-md-6">
-                <label class="form-label">Поиск</label>
-                <input type="text" name="q" value="@query" class="form-control" placeholder="Введите название или расположение" />
+                <label class="form-label">РџРѕРёСЃРє</label>
+                <input type="text" name="q" value="@query" class="form-control" placeholder="Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РёР»Рё СЂР°СЃРїРѕР»РѕР¶РµРЅРёРµ" />
             </div>
             <div class="col-12 col-md-3">
-                <label class="form-label">Статус</label>
+                <label class="form-label">РЎС‚Р°С‚СѓСЃ</label>
                 <select name="isActive" class="form-select">
-                    <option value="">Любой</option>
-                    <option value="true" selected="@(isActive == true)">Активна</option>
-                    <option value="false" selected="@(isActive == false)">Неактивна</option>
+                    <option value="">Р›СЋР±РѕР№</option>
+                    <option value="true" selected="@(isActive == true)">РђРєС‚РёРІРЅР°</option>
+                    <option value="false" selected="@(isActive == false)">РќРµР°РєС‚РёРІРЅР°</option>
                 </select>
             </div>
             <div class="col-12 col-md-3 d-flex gap-2">
-                <button type="submit" class="btn btn-primary w-100">Применить</button>
+                <button type="submit" class="btn btn-primary w-100">РџСЂРёРјРµРЅРёС‚СЊ</button>
             </div>
             <div class="col-12 d-flex flex-wrap gap-2">
-                <a class="btn btn-outline-secondary" asp-action="Index">Сбросить</a>
-                <a class="btn btn-outline-primary ms-auto" asp-action="Create">Добавить</a>
+                <a class="btn btn-outline-secondary" asp-action="Index">РЎР±СЂРѕСЃРёС‚СЊ</a>
+                <a class="btn btn-outline-primary ms-auto" asp-action="Create">Р”РѕР±Р°РІРёС‚СЊ</a>
             </div>
         </form>
     </div>
@@ -65,7 +65,7 @@
         <input type="hidden" name="sort" value="@currentSort" />
         <input type="hidden" name="desc" value="@currentDesc.ToString().ToLowerInvariant()" />
         <input type="hidden" name="page" value="1" />
-        <label class="small text-muted text-nowrap" for="accessPointPageSize">Отображать на странице</label>
+        <label class="small text-muted text-nowrap" for="accessPointPageSize">РћС‚РѕР±СЂР°Р¶Р°С‚СЊ РЅР° СЃС‚СЂР°РЅРёС†Рµ</label>
         <select id="accessPointPageSize" name="pageSize" class="form-select form-select-sm" onchange="this.form.submit()">
             @foreach (var size in Model.PageSizeOptions)
             {
@@ -73,19 +73,19 @@
             }
         </select>
     </form>
-    <div class="small text-muted">Показаны записи @Model.StartItem-@Model.EndItem из @Model.TotalCount</div>
+    <div class="small text-muted">РџРѕРєР°Р·Р°РЅС‹ Р·Р°РїРёСЃРё @Model.StartItem-@Model.EndItem РёР· @Model.TotalCount</div>
 </div>
 
 <div class="table-responsive">
     <table class="table table-modern align-middle">
         <thead>
         <tr>
-            <th><a class="sort-link" href="@SortUrl("name")">Название @(currentSort == "name" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("location")">Расположение @(currentSort == "location" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("departments")">Департаменты @(currentSort == "departments" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("guest")">Гостевой доступ @(currentSort == "guest" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("status")">Статус @(currentSort == "status" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th class="text-end">Действия</th>
+            <th><a class="sort-link" href="@SortUrl("name")">РќР°Р·РІР°РЅРёРµ @(currentSort == "name" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("location")">Р Р°СЃРїРѕР»РѕР¶РµРЅРёРµ @(currentSort == "location" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("departments")">Р”РµРїР°СЂС‚Р°РјРµРЅС‚С‹ @(currentSort == "departments" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("guest")">Р“РѕСЃС‚РµРІРѕР№ РґРѕСЃС‚СѓРї @(currentSort == "guest" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("status")">РЎС‚Р°С‚СѓСЃ @(currentSort == "status" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th class="text-end">Р”РµР№СЃС‚РІРёСЏ</th>
         </tr>
         </thead>
         <tbody>
@@ -95,14 +95,14 @@
             {
                 <tr>
                     <td>@item.Name</td>
-                    <td>@(string.IsNullOrWhiteSpace(item.Location) ? "Не указано" : item.Location)</td>
-                    <td>@(item.DepartmentNames.Any() ? string.Join(", ", item.DepartmentNames) : "Не назначены")</td>
-                    <td>@(item.IsGuestAccess ? "Да" : "Нет")</td>
-                    <td>@(item.IsActive ? "Активна" : "Неактивна")</td>
+                    <td>@(string.IsNullOrWhiteSpace(item.Location) ? "РќРµ СѓРєР°Р·Р°РЅРѕ" : item.Location)</td>
+                    <td>@(item.DepartmentNames.Any() ? string.Join(", ", item.DepartmentNames) : "РќРµ РЅР°Р·РЅР°С‡РµРЅС‹")</td>
+                    <td>@(item.IsGuestAccess ? "Р”Р°" : "РќРµС‚")</td>
+                    <td>@(item.IsActive ? "РђРєС‚РёРІРЅР°" : "РќРµР°РєС‚РёРІРЅР°")</td>
                     <td class="text-end">
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Просмотр</a>
-                        <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">РџСЂРѕСЃРјРѕС‚СЂ</a>
+                        <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">РР·РјРµРЅРёС‚СЊ</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">РЈРґР°Р»РёС‚СЊ</a>
                     </td>
                 </tr>
             }
@@ -110,17 +110,17 @@
         else
         {
             <tr>
-                <td colspan="6" class="text-center py-4 text-muted">Ничего не найдено.</td>
+                <td colspan="6" class="text-center py-4 text-muted">РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</td>
             </tr>
         }
         </tbody>
     </table>
 </div>
 
-<nav class="mt-3" aria-label="Пагинация точек доступа">
+<nav class="mt-3" aria-label="РџР°РіРёРЅР°С†РёСЏ С‚РѕС‡РµРє РґРѕСЃС‚СѓРїР°">
     <ul class="pagination pagination-sm mb-0 justify-content-center">
-        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(1)" aria-label="Первая страница">«</a></li>
-        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page - 1)" aria-label="Предыдущая страница">‹</a></li>
+        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(1)" aria-label="РџРµСЂРІР°СЏ СЃС‚СЂР°РЅРёС†Р°">В«</a></li>
+        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page - 1)" aria-label="РџСЂРµРґС‹РґСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">вЂ№</a></li>
         @for (var i = 1; i <= Model.TotalPages; i++)
         {
             if (i < Model.Page - 2 || i > Model.Page + 2)
@@ -130,8 +130,8 @@
 
             <li class="page-item @(i == Model.Page ? "active" : null)"><a class="page-link" href="@PageUrl(i)">@i</a></li>
         }
-        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page + 1)" aria-label="Следующая страница">›</a></li>
-        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.TotalPages)" aria-label="Последняя страница">»</a></li>
+        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page + 1)" aria-label="РЎР»РµРґСѓСЋС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">вЂє</a></li>
+        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.TotalPages)" aria-label="РџРѕСЃР»РµРґРЅСЏСЏ СЃС‚СЂР°РЅРёС†Р°">В»</a></li>
     </ul>
 </nav>
 

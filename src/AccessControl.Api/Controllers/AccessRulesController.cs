@@ -17,18 +17,12 @@ public class AccessRulesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<AccessRule>>> GetAll([FromQuery] Guid? employeeId = null, [FromQuery] Guid? accessPointId = null, [FromQuery] Guid? scheduleId = null, [FromQuery] bool? isActive = null)
+    public async Task<ActionResult<List<AccessRule>>> GetAll([FromQuery] Guid? accessPointId = null, [FromQuery] Guid? scheduleId = null, [FromQuery] bool? isActive = null)
     {
         IQueryable<AccessRule> query = _db.AccessRules
-            .Include(r => r.Employee)
             .Include(r => r.AccessPoint)
             .Include(r => r.Schedule)
             .AsNoTracking();
-
-        if (employeeId.HasValue)
-        {
-            query = query.Where(r => r.EmployeeId == employeeId.Value);
-        }
 
         if (accessPointId.HasValue)
         {
@@ -53,7 +47,6 @@ public class AccessRulesController : ControllerBase
     public async Task<ActionResult<AccessRule>> GetById(Guid id)
     {
         var rule = await _db.AccessRules
-            .Include(r => r.Employee)
             .Include(r => r.AccessPoint)
             .Include(r => r.Schedule)
             .AsNoTracking()
@@ -90,7 +83,6 @@ public class AccessRulesController : ControllerBase
             return NotFound();
         }
 
-        existing.EmployeeId = rule.EmployeeId;
         existing.AccessPointId = rule.AccessPointId;
         existing.ScheduleId = rule.ScheduleId;
         existing.ValidFrom = rule.ValidFrom;

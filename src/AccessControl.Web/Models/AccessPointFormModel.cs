@@ -1,4 +1,4 @@
-using AccessControl.Domain.Entities;
+﻿using AccessControl.Domain.Entities;
 
 namespace AccessControl.Web.Models;
 
@@ -26,9 +26,8 @@ public class AccessPointFormModel
             Location = point.Location,
             IsActive = point.IsActive,
             IsGuestAccess = point.IsGuestAccess,
-            SelectedEmployeeIds = rules
-                .Where(r => r.EmployeeId.HasValue && r.ScheduleId == null && r.ValidFrom == null && r.ValidTo == null)
-                .Select(r => r.EmployeeId!.Value)
+            SelectedEmployeeIds = point.EmployeeAccessPoints
+                .Select(link => link.EmployeeId)
                 .Distinct()
                 .ToList(),
             ExistingRules = rules

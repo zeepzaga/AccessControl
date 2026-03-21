@@ -69,6 +69,7 @@
     </header>
     <div class="container app-shell">
         <main role="main">
+            @await Html.PartialAsync("_ScreenError", ViewData["ScreenError"] as AccessControl.Web.Models.ErrorViewModel)
             @RenderBody()
         </main>
     </div>

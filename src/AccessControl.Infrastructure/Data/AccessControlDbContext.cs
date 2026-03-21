@@ -18,6 +18,7 @@ public class AccessControlDbContext : IdentityDbContext<ApplicationUser, Identit
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<EmployeeDepartment> EmployeeDepartments => Set<EmployeeDepartment>();
     public DbSet<DepartmentAccessPoint> DepartmentAccessPoints => Set<DepartmentAccessPoint>();
+    public DbSet<EmployeeAccessPoint> EmployeeAccessPoints => Set<EmployeeAccessPoint>();
     public DbSet<NfcCard> NfcCards => Set<NfcCard>();
     public DbSet<AccessPoint> AccessPoints => Set<AccessPoint>();
     public DbSet<Schedule> Schedules => Set<Schedule>();
@@ -140,6 +141,22 @@ public class AccessControlDbContext : IdentityDbContext<ApplicationUser, Identit
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
+        modelBuilder.Entity<EmployeeAccessPoint>(entity =>
+        {
+            entity.ToTable("EmployeeAccessPoints");
+            entity.HasKey(e => new { e.EmployeeId, e.AccessPointId });
+            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeId");
+            entity.Property(e => e.AccessPointId).HasColumnName("AccessPointId");
+            entity.HasOne(e => e.Employee)
+                .WithMany(employee => employee.EmployeeAccessPoints)
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.AccessPoint)
+                .WithMany(point => point.EmployeeAccessPoints)
+                .HasForeignKey(e => e.AccessPointId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         modelBuilder.Entity<NfcCard>(entity =>
         {
             entity.ToTable("NfcCards");
@@ -186,16 +203,11 @@ public class AccessControlDbContext : IdentityDbContext<ApplicationUser, Identit
             entity.ToTable("AccessRules");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("Id").HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeId");
             entity.Property(e => e.AccessPointId).HasColumnName("AccessPointId");
             entity.Property(e => e.ScheduleId).HasColumnName("ScheduleId");
             entity.Property(e => e.ValidFrom).HasColumnName("ValidFrom").HasColumnType("timestamp without time zone");
             entity.Property(e => e.ValidTo).HasColumnName("ValidTo").HasColumnType("timestamp without time zone");
             entity.Property(e => e.IsActive).HasColumnName("IsActive").HasDefaultValue(true);
-            entity.HasOne(e => e.Employee)
-                .WithMany()
-                .HasForeignKey(e => e.EmployeeId)
-                .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.AccessPoint)
                 .WithMany(p => p.AccessRules)
                 .HasForeignKey(e => e.AccessPointId)

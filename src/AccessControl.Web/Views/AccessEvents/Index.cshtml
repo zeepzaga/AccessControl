@@ -1,6 +1,6 @@
-@model AccessControl.Web.Models.PagedListViewModel<AccessControl.Domain.Entities.AccessEvent>
+п»ї@model AccessControl.Web.Models.PagedListViewModel<AccessControl.Domain.Entities.AccessEvent>
 @{
-    ViewData["Title"] = "Журнал событий";
+    ViewData["Title"] = "Р–СѓСЂРЅР°Р» СЃРѕР±С‹С‚РёР№";
     var currentSort = ViewBag.Sort as string ?? "eventtime";
     var currentDesc = ViewBag.Desc is bool b && b;
     var defaultColumns = new[] { "event_time", "card_uid", "employee_name", "access_point", "device", "access_granted", "reason" };
@@ -17,14 +17,14 @@
 
     string TranslateReason(object? reasonValue) => reasonValue?.ToString() switch
     {
-        "OK" => "Разрешено",
-        "CardNotFound" => "Карта не найдена",
-        "AccessDenied" => "Доступ запрещён",
-        "ScheduleDenied" => "Запрещено расписанием",
-        "CardExpired" => "Карта просрочена",
-        "DeviceUnknown" => "Неизвестное устройство",
-        "BiometricFailed" => "Биометрия не пройдена",
-        _ => reasonValue?.ToString() ?? "—"
+        "OK" => "Р Р°Р·СЂРµС€РµРЅРѕ",
+        "CardNotFound" => "РљР°СЂС‚Р° РЅРµ РЅР°Р№РґРµРЅР°",
+        "AccessDenied" => "Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰С‘РЅ",
+        "ScheduleDenied" => "Р—Р°РїСЂРµС‰РµРЅРѕ СЂР°СЃРїРёСЃР°РЅРёРµРј",
+        "CardExpired" => "РљР°СЂС‚Р° РїСЂРѕСЃСЂРѕС‡РµРЅР°",
+        "DeviceUnknown" => "РќРµРёР·РІРµСЃС‚РЅРѕРµ СѓСЃС‚СЂРѕР№СЃС‚РІРѕ",
+        "BiometricFailed" => "Р‘РёРѕРјРµС‚СЂРёСЏ РЅРµ РїСЂРѕР№РґРµРЅР°",
+        _ => reasonValue?.ToString() ?? "вЂ”"
     };
 
     string SortUrl(string column) => Url.Action("Index", new
@@ -58,21 +58,21 @@
     }) ?? "#";
 }
 
-<h2>Журнал событий</h2>
+<h2>Р–СѓСЂРЅР°Р» СЃРѕР±С‹С‚РёР№</h2>
 
 <div class="card mb-4">
     <div class="card-body">
-        <h5 class="card-title">Фильтр</h5>
+        <h5 class="card-title">Р¤РёР»СЊС‚СЂ</h5>
         <form method="get" class="row g-3">
             <input type="hidden" name="sort" value="@currentSort" />
             <input type="hidden" name="desc" value="@currentDesc.ToString().ToLowerInvariant()" />
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
             <div class="col-12 col-md-4">
-                <label class="form-label">UID карты</label>
+                <label class="form-label">UID РєР°СЂС‚С‹</label>
                 <div class="searchable-select">
-                    <input type="search" class="form-control searchable-select-filter" placeholder="Начните вводить UID карты" data-select-filter-input="event-card" />
+                    <input type="search" class="form-control searchable-select-filter" placeholder="РќР°С‡РЅРёС‚Рµ РІРІРѕРґРёС‚СЊ UID РєР°СЂС‚С‹" data-select-filter-input="event-card" />
                     <select name="cardUid" class="form-select" data-select-filter-target="event-card">
-                        <option value="">Все карты</option>
+                        <option value="">Р’СЃРµ РєР°СЂС‚С‹</option>
                         @foreach (var option in cardOptions)
                         {
                             <option value="@option.Value" data-filter-text="@option.SearchText.ToLowerInvariant()" selected="@option.Selected">@option.Label</option>
@@ -81,11 +81,11 @@
                 </div>
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">Точка доступа</label>
+                <label class="form-label">РўРѕС‡РєР° РґРѕСЃС‚СѓРїР°</label>
                 <div class="searchable-select">
-                    <input type="search" class="form-control searchable-select-filter" placeholder="Начните вводить название точки доступа" data-select-filter-input="event-accesspoint" />
+                    <input type="search" class="form-control searchable-select-filter" placeholder="РќР°С‡РЅРёС‚Рµ РІРІРѕРґРёС‚СЊ РЅР°Р·РІР°РЅРёРµ С‚РѕС‡РєРё РґРѕСЃС‚СѓРїР°" data-select-filter-input="event-accesspoint" />
                     <select name="accessPointId" class="form-select" data-select-filter-target="event-accesspoint">
-                        <option value="">Все точки доступа</option>
+                        <option value="">Р’СЃРµ С‚РѕС‡РєРё РґРѕСЃС‚СѓРїР°</option>
                         @foreach (var option in accessPointOptions)
                         {
                             <option value="@option.Value" data-filter-text="@option.SearchText.ToLowerInvariant()" selected="@option.Selected">@option.Label</option>
@@ -94,11 +94,11 @@
                 </div>
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">Сотрудник</label>
+                <label class="form-label">РЎРѕС‚СЂСѓРґРЅРёРє</label>
                 <div class="searchable-select">
-                    <input type="search" class="form-control searchable-select-filter" placeholder="Начните вводить ФИО сотрудника" data-select-filter-input="event-employee" />
+                    <input type="search" class="form-control searchable-select-filter" placeholder="РќР°С‡РЅРёС‚Рµ РІРІРѕРґРёС‚СЊ Р¤РРћ СЃРѕС‚СЂСѓРґРЅРёРєР°" data-select-filter-input="event-employee" />
                     <select name="employeeId" class="form-select" data-select-filter-target="event-employee">
-                        <option value="">Все сотрудники</option>
+                        <option value="">Р’СЃРµ СЃРѕС‚СЂСѓРґРЅРёРєРё</option>
                         @foreach (var option in employeeOptions)
                         {
                             <option value="@option.Value" data-filter-text="@option.SearchText.ToLowerInvariant()" selected="@option.Selected">@option.Label</option>
@@ -107,37 +107,37 @@
                 </div>
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">Результат</label>
+                <label class="form-label">Р РµР·СѓР»СЊС‚Р°С‚</label>
                 <select name="granted" class="form-select">
-                    <option value="">Любой</option>
-                    <option value="true" selected="@(granted == true)">Разрешён</option>
-                    <option value="false" selected="@(granted == false)">Запрещён</option>
+                    <option value="">Р›СЋР±РѕР№</option>
+                    <option value="true" selected="@(granted == true)">Р Р°Р·СЂРµС€С‘РЅ</option>
+                    <option value="false" selected="@(granted == false)">Р—Р°РїСЂРµС‰С‘РЅ</option>
                 </select>
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">Причина</label>
+                <label class="form-label">РџСЂРёС‡РёРЅР°</label>
                 <select name="reason" class="form-select">
-                    <option value="">Любая</option>
-                    <option value="OK" selected="@(reason == "OK")">Разрешено</option>
-                    <option value="CardNotFound" selected="@(reason == "CardNotFound")">Карта не найдена</option>
-                    <option value="AccessDenied" selected="@(reason == "AccessDenied")">Доступ запрещён</option>
-                    <option value="ScheduleDenied" selected="@(reason == "ScheduleDenied")">Запрещено расписанием</option>
-                    <option value="CardExpired" selected="@(reason == "CardExpired")">Карта просрочена</option>
-                    <option value="DeviceUnknown" selected="@(reason == "DeviceUnknown")">Неизвестное устройство</option>
-                    <option value="BiometricFailed" selected="@(reason == "BiometricFailed")">Биометрия не пройдена</option>
+                    <option value="">Р›СЋР±Р°СЏ</option>
+                    <option value="OK" selected="@(reason == "OK")">Р Р°Р·СЂРµС€РµРЅРѕ</option>
+                    <option value="CardNotFound" selected="@(reason == "CardNotFound")">РљР°СЂС‚Р° РЅРµ РЅР°Р№РґРµРЅР°</option>
+                    <option value="AccessDenied" selected="@(reason == "AccessDenied")">Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰С‘РЅ</option>
+                    <option value="ScheduleDenied" selected="@(reason == "ScheduleDenied")">Р—Р°РїСЂРµС‰РµРЅРѕ СЂР°СЃРїРёСЃР°РЅРёРµРј</option>
+                    <option value="CardExpired" selected="@(reason == "CardExpired")">РљР°СЂС‚Р° РїСЂРѕСЃСЂРѕС‡РµРЅР°</option>
+                    <option value="DeviceUnknown" selected="@(reason == "DeviceUnknown")">РќРµРёР·РІРµСЃС‚РЅРѕРµ СѓСЃС‚СЂРѕР№СЃС‚РІРѕ</option>
+                    <option value="BiometricFailed" selected="@(reason == "BiometricFailed")">Р‘РёРѕРјРµС‚СЂРёСЏ РЅРµ РїСЂРѕР№РґРµРЅР°</option>
                 </select>
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">С даты (UTC)</label>
+                <label class="form-label">РЎ РґР°С‚С‹ (UTC)</label>
                 <input type="datetime-local" name="fromUtc" value="@fromUtc" class="form-control" />
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">По дату (UTC)</label>
+                <label class="form-label">РџРѕ РґР°С‚Сѓ (UTC)</label>
                 <input type="datetime-local" name="toUtc" value="@toUtc" class="form-control" />
             </div>
             <div class="col-12 d-flex flex-wrap gap-2">
-                <button type="submit" class="btn btn-primary">Применить</button>
-                <a class="btn btn-outline-secondary" href="@Url.Action("Index")">Сбросить</a>
+                <button type="submit" class="btn btn-primary">РџСЂРёРјРµРЅРёС‚СЊ</button>
+                <a class="btn btn-outline-secondary" href="@Url.Action("Index")">РЎР±СЂРѕСЃРёС‚СЊ</a>
             </div>
         </form>
     </div>
@@ -145,29 +145,29 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <h5 class="card-title">Экспорт</h5>
+        <h5 class="card-title">Р­РєСЃРїРѕСЂС‚</h5>
         <form method="get" asp-action="Export" class="row g-3">
             <div class="col-12 col-md-3">
-                <label class="form-label">Формат</label>
+                <label class="form-label">Р¤РѕСЂРјР°С‚</label>
                 <select name="format" class="form-select">
                     <option value="csv">CSV</option>
                     <option value="xlsx">XLSX</option>
                 </select>
             </div>
             <div class="col-12 col-md-9">
-                <label class="form-label">Колонки</label>
+                <label class="form-label">РљРѕР»РѕРЅРєРё</label>
                 <div class="d-flex flex-wrap gap-3">
                     @foreach (var col in defaultColumns)
                     {
                         var label = col switch
                         {
-                            "event_time" => "Время",
-                            "card_uid" => "UID карты",
-                            "employee_name" => "Сотрудник",
-                            "access_point" => "Точка доступа",
-                            "device" => "Устройство",
-                            "access_granted" => "Результат",
-                            "reason" => "Причина",
+                            "event_time" => "Р’СЂРµРјСЏ",
+                            "card_uid" => "UID РєР°СЂС‚С‹",
+                            "employee_name" => "РЎРѕС‚СЂСѓРґРЅРёРє",
+                            "access_point" => "РўРѕС‡РєР° РґРѕСЃС‚СѓРїР°",
+                            "device" => "РЈСЃС‚СЂРѕР№СЃС‚РІРѕ",
+                            "access_granted" => "Р РµР·СѓР»СЊС‚Р°С‚",
+                            "reason" => "РџСЂРёС‡РёРЅР°",
                             _ => col
                         };
                         <div class="form-check">
@@ -178,16 +178,16 @@
                 </div>
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">С даты (UTC)</label>
+                <label class="form-label">РЎ РґР°С‚С‹ (UTC)</label>
                 <input type="datetime-local" name="fromUtc" class="form-control" />
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label">По дату (UTC)</label>
+                <label class="form-label">РџРѕ РґР°С‚Сѓ (UTC)</label>
                 <input type="datetime-local" name="toUtc" class="form-control" />
             </div>
             <div class="col-12 d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Экспортировать</button>
-                <a class="btn btn-outline-secondary" href="@Url.Action("Export", new { format = "csv" })">Быстрый CSV</a>
+                <button type="submit" class="btn btn-primary">Р­РєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ</button>
+                <a class="btn btn-outline-secondary" href="@Url.Action("Export", new { format = "csv" })">Р‘С‹СЃС‚СЂС‹Р№ CSV</a>
             </div>
         </form>
     </div>
@@ -205,7 +205,7 @@
         <input type="hidden" name="sort" value="@currentSort" />
         <input type="hidden" name="desc" value="@currentDesc.ToString().ToLowerInvariant()" />
         <input type="hidden" name="page" value="1" />
-        <label class="small text-muted text-nowrap" for="eventPageSize">Отображать на странице</label>
+        <label class="small text-muted text-nowrap" for="eventPageSize">РћС‚РѕР±СЂР°Р¶Р°С‚СЊ РЅР° СЃС‚СЂР°РЅРёС†Рµ</label>
         <select id="eventPageSize" name="pageSize" class="form-select form-select-sm" onchange="this.form.submit()">
             @foreach (var size in Model.PageSizeOptions)
             {
@@ -213,20 +213,20 @@
             }
         </select>
     </form>
-    <div class="small text-muted">Показаны записи @Model.StartItem-@Model.EndItem из @Model.TotalCount</div>
+    <div class="small text-muted">РџРѕРєР°Р·Р°РЅС‹ Р·Р°РїРёСЃРё @Model.StartItem-@Model.EndItem РёР· @Model.TotalCount</div>
 </div>
 
 <div class="table-responsive">
     <table class="table table-modern align-middle">
         <thead>
         <tr>
-            <th><a class="sort-link" href="@SortUrl("eventtime")">Время @(currentSort == "eventtime" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("uid")">UID @(currentSort == "uid" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("employee")">Сотрудник @(currentSort == "employee" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("accesspoint")">Точка доступа @(currentSort == "accesspoint" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("device")">Устройство @(currentSort == "device" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("result")">Результат @(currentSort == "result" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
-            <th><a class="sort-link" href="@SortUrl("reason")">Причина @(currentSort == "reason" ? (currentDesc ? "Ў" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("eventtime")">Р’СЂРµРјСЏ @(currentSort == "eventtime" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("uid")">UID @(currentSort == "uid" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("employee")">РЎРѕС‚СЂСѓРґРЅРёРє @(currentSort == "employee" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("accesspoint")">РўРѕС‡РєР° РґРѕСЃС‚СѓРїР° @(currentSort == "accesspoint" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("device")">РЈСЃС‚СЂРѕР№СЃС‚РІРѕ @(currentSort == "device" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("result")">Р РµР·СѓР»СЊС‚Р°С‚ @(currentSort == "result" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
+            <th><a class="sort-link" href="@SortUrl("reason")">РџСЂРёС‡РёРЅР° @(currentSort == "reason" ? (currentDesc ? "РЋ" : "^") : string.Empty)</a></th>
         </tr>
         </thead>
         <tbody>
@@ -236,11 +236,11 @@
             {
                 <tr>
                     <td>@item.EventTime.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
-                    <td>@(item.CardUid ?? "—")</td>
-                    <td>@(item.Employee?.FullName ?? "Не указан")</td>
-                    <td>@(item.AccessPoint?.Name ?? "Не указана")</td>
-                    <td>@(item.Device?.Name ?? "Не указано")</td>
-                    <td>@(item.AccessGranted ? "Разрешён" : "Запрещён")</td>
+                    <td>@(item.CardUid ?? "вЂ”")</td>
+                    <td>@(item.Employee?.FullName ?? "РќРµ СѓРєР°Р·Р°РЅ")</td>
+                    <td>@(item.AccessPoint?.Name ?? "РќРµ СѓРєР°Р·Р°РЅР°")</td>
+                    <td>@(item.Device?.Name ?? "РќРµ СѓРєР°Р·Р°РЅРѕ")</td>
+                    <td>@(item.AccessGranted ? "Р Р°Р·СЂРµС€С‘РЅ" : "Р—Р°РїСЂРµС‰С‘РЅ")</td>
                     <td>@TranslateReason(item.Reason)</td>
                 </tr>
             }
@@ -248,17 +248,17 @@
         else
         {
             <tr>
-                <td colspan="7" class="text-center py-4 text-muted">Ничего не найдено.</td>
+                <td colspan="7" class="text-center py-4 text-muted">РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</td>
             </tr>
         }
         </tbody>
     </table>
 </div>
 
-<nav class="mt-3" aria-label="Пагинация журнала">
+<nav class="mt-3" aria-label="РџР°РіРёРЅР°С†РёСЏ Р¶СѓСЂРЅР°Р»Р°">
     <ul class="pagination pagination-sm mb-0 justify-content-center">
-        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(1)" aria-label="Первая страница">«</a></li>
-        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page - 1)" aria-label="Предыдущая страница">‹</a></li>
+        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(1)" aria-label="РџРµСЂРІР°СЏ СЃС‚СЂР°РЅРёС†Р°">В«</a></li>
+        <li class="page-item @(Model.Page == 1 ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page - 1)" aria-label="РџСЂРµРґС‹РґСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">вЂ№</a></li>
         @for (var i = 1; i <= Model.TotalPages; i++)
         {
             if (i < Model.Page - 2 || i > Model.Page + 2)
@@ -268,8 +268,8 @@
 
             <li class="page-item @(i == Model.Page ? "active" : null)"><a class="page-link" href="@PageUrl(i)">@i</a></li>
         }
-        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page + 1)" aria-label="Следующая страница">›</a></li>
-        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.TotalPages)" aria-label="Последняя страница">»</a></li>
+        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.Page + 1)" aria-label="РЎР»РµРґСѓСЋС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">вЂє</a></li>
+        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)"><a class="page-link" href="@PageUrl(Model.TotalPages)" aria-label="РџРѕСЃР»РµРґРЅСЏСЏ СЃС‚СЂР°РЅРёС†Р°">В»</a></li>
     </ul>
 </nav>
 
